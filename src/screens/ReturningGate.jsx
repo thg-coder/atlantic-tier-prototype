@@ -2,21 +2,21 @@ import { UserCheck, UserPlus } from 'lucide-react'
 import { useBooking } from '../state/BookingContext.jsx'
 import { findService } from '../mockData.js'
 import ChoiceCard from '../components/ChoiceCard.jsx'
+import { PrimaryButton } from '../components/Buttons.jsx'
 
 export default function ReturningGate() {
   const { state, dispatch, goNext } = useBooking()
   const service = findService(state.serviceId)
 
   function pick(value) {
+    if (state.isReturningPatient === value) return // same option already selected
     dispatch({ type: 'SET_RETURNING', value })
-    // Advance immediately — large tappable cards.
-    setTimeout(goNext, 100)
   }
 
   return (
     <div className="screen-enter flex flex-col gap-4">
       <div>
-        <h2 className="font-display text-2xl text-navy mb-1 leading-tight">
+        <h2 className="font-display font-medium text-[26px] text-navy mb-1 leading-tight">
           Have you had a consultation with us for this service in the last 12 months?
         </h2>
         {service && (
@@ -47,6 +47,13 @@ export default function ReturningGate() {
         Returning patients within the last 12 months can book their procedure directly. New
         patients or those returning after 12+ months will book a consultation first.
       </p>
+
+      <PrimaryButton
+        onClick={goNext}
+        disabled={state.isReturningPatient === null || state.isReturningPatient === undefined}
+      >
+        Continue
+      </PrimaryButton>
     </div>
   )
 }

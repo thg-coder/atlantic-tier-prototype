@@ -13,8 +13,24 @@ body,
 body {
   font-family: 'Inter', ui-sans-serif, system-ui, -apple-system, sans-serif;
   color: #1f2937;
+  line-height: 1.55;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  font-feature-settings: 'cv11', 'ss01', 'ss03';
+}
+
+h1,
+h2,
+h3,
+h4,
+.font-display {
+  line-height: 1.18;
+  letter-spacing: -0.005em;
+}
+
+/* Tabular numerals on metadata-style numbers (durations, prices, time chips) */
+.tabular-nums {
+  font-feature-settings: 'tnum' 1;
 }
 
 /* Make focus rings consistent and accessible */

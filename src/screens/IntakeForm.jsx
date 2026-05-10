@@ -119,7 +119,7 @@ export default function IntakeForm() {
   return (
     <form className="screen-enter flex flex-col gap-4" onSubmit={handleSubmit} noValidate>
       <div>
-        <h2 className="font-display text-2xl text-navy mb-1">Your details</h2>
+        <h2 className="font-display font-medium text-[26px] text-navy mb-1">Your details</h2>
         <p className="text-xs text-navy/60">
           We'll use these to confirm your appointment and send reminders.
         </p>

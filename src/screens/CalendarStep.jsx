@@ -26,7 +26,7 @@ export default function CalendarStep() {
         <span className="inline-block px-2 py-1 rounded-full bg-navy/5 text-[10px] font-semibold tracking-wider uppercase text-navy/70">
           {contextLabel}
         </span>
-        <h2 className="font-display text-2xl text-navy mt-2 mb-1">Pick a time</h2>
+        <h2 className="font-display font-medium text-[26px] text-navy mt-2 mb-1">Pick a time</h2>
         <p className="text-xs text-navy/60">
           You'll be seeing{' '}
           <span className="font-medium text-navy">{PRACTITIONER.shortName}</span>,{' '}

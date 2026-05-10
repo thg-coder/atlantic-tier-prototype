@@ -1,15 +1,16 @@
-import { Sparkles } from 'lucide-react'
+import { Sparkles, CheckCircle2, MinusCircle } from 'lucide-react'
 import { useBooking } from '../state/BookingContext.jsx'
 import { SAME_DAY_DEPOSIT } from '../mockData.js'
 import { formatPriceUSD } from '../utils/format.js'
-import { PrimaryButton, SecondaryButton } from '../components/Buttons.jsx'
+import ChoiceCard from '../components/ChoiceCard.jsx'
+import { PrimaryButton } from '../components/Buttons.jsx'
 
 export default function SameDayOffer() {
-  const { dispatch, goNext } = useBooking()
+  const { state, dispatch, goNext } = useBooking()
 
   function pick(value) {
+    if (state.sameDayProcedure === value) return // already selected
     dispatch({ type: 'SET_SAME_DAY', value })
-    setTimeout(goNext, 100)
   }
 
   return (
@@ -19,7 +20,7 @@ export default function SameDayOffer() {
           <Sparkles size={16} />
           <span className="text-[10px] font-semibold uppercase tracking-wider">Optional add-on</span>
         </div>
-        <h2 className="font-display text-2xl text-navy mt-2 leading-tight">
+        <h2 className="font-display font-medium text-[26px] text-navy mt-2 leading-tight">
           Want your procedure done the same day?
         </h2>
         <p className="mt-2 text-xs text-navy/70 leading-relaxed">
@@ -32,18 +33,35 @@ export default function SameDayOffer() {
           <span className="text-[10px] uppercase tracking-wider font-semibold text-navy/50">
             Deposit
           </span>
-          <span className="ml-1 text-2xl font-display text-navy">
+          <span className="ml-1 text-2xl font-semibold text-navy tabular-nums">
             {formatPriceUSD(SAME_DAY_DEPOSIT)}
           </span>
         </div>
       </div>
 
-      <div className="flex flex-col gap-2">
-        <PrimaryButton onClick={() => pick(true)}>
-          Yes, reserve same-day procedure
-        </PrimaryButton>
-        <SecondaryButton onClick={() => pick(false)}>No, just the consultation</SecondaryButton>
+      <div className="flex flex-col gap-3">
+        <ChoiceCard
+          icon={<CheckCircle2 size={20} />}
+          title="Yes, reserve same-day procedure"
+          description={`We'll add a ${formatPriceUSD(SAME_DAY_DEPOSIT)} deposit to today's total and reserve extra time on your appointment.`}
+          selected={state.sameDayProcedure === true}
+          onClick={() => pick(true)}
+        />
+        <ChoiceCard
+          icon={<MinusCircle size={20} />}
+          title="No, just the consultation"
+          description="You can always book the procedure separately after your consultation."
+          selected={state.sameDayProcedure === false}
+          onClick={() => pick(false)}
+        />
       </div>
+
+      <PrimaryButton
+        onClick={goNext}
+        disabled={state.sameDayProcedure === null || state.sameDayProcedure === undefined}
+      >
+        Continue
+      </PrimaryButton>
     </div>
   )
 }

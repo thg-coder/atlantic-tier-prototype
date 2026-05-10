@@ -2,6 +2,7 @@ import { Video, MapPin } from 'lucide-react'
 import { useBooking } from '../state/BookingContext.jsx'
 import { findService } from '../mockData.js'
 import ChoiceCard from '../components/ChoiceCard.jsx'
+import { PrimaryButton } from '../components/Buttons.jsx'
 
 export default function ConsultationFormat() {
   const { state, dispatch, goNext } = useBooking()
@@ -10,14 +11,14 @@ export default function ConsultationFormat() {
 
   function pick(format) {
     if (format === 'virtual' && inPersonOnly) return
+    if (state.consultFormat === format) return // already selected
     dispatch({ type: 'SET_FORMAT', format })
-    setTimeout(goNext, 100)
   }
 
   return (
     <div className="screen-enter flex flex-col gap-4">
       <div>
-        <h2 className="font-display text-2xl text-navy mb-1">Choose a consultation format</h2>
+        <h2 className="font-display font-medium text-[26px] text-navy mb-1">Choose a consultation format</h2>
         {service && (
           <p className="text-xs text-navy/60">
             For your consultation on{' '}
@@ -44,6 +45,10 @@ export default function ConsultationFormat() {
           onClick={() => pick('in-person')}
         />
       </div>
+
+      <PrimaryButton onClick={goNext} disabled={!state.consultFormat}>
+        Continue
+      </PrimaryButton>
     </div>
   )
 }

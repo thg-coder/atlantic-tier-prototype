@@ -72,7 +72,7 @@ export default function Checkout() {
   return (
     <div className="screen-enter flex flex-col gap-4">
       <div>
-        <h2 className="font-display text-2xl text-navy mb-1">Payment</h2>
+        <h2 className="font-display font-medium text-[26px] text-navy mb-1">Payment</h2>
         <p className="text-[11px] text-navy/60 inline-flex items-center gap-1">
           <Lock size={11} aria-hidden="true" />
           Secured & encrypted (demo only)

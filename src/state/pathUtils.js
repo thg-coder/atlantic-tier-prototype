@@ -25,65 +25,83 @@ export const STEP_LABELS = {
   CONFIRMATION: 'Done'
 }
 
-// Booking paths
-// 1. Consultation (new patient) flow: 9 steps (incl. same-day offer)
-// 2. Direct service flow (no consult required): 7 steps
-// 3. Returning patient direct flow (consult-required service, returning yes): 8 steps
-//    spec describes 8 steps for this path; we use Service, Returning Gate,
-//    Calendar, Intake, Policy, Checkout, Done — that is 7 explicit steps;
-//    we render an additional confirmation step "Verify" implicitly by counting
-//    the gate as its own visible step.
+// Booking paths the progress bar can settle on:
+//   - Direct service (no consult): 6 steps
+//   - Consult required, returning patient: 7 steps
+//   - Consult required, new patient, declined same-day: 8 steps
+//   - Consult required, new patient, undecided OR opted in to same-day: 9 steps
 //
-// Implementation: build the list of visible step IDs for each path.
+// Until the path is fully determined we show the maximum-length path (9) as a
+// placeholder so the progress bar doesn't show a misleading short total.
+const FULL_NEW_PATH = [
+  STEP.SERVICE,
+  STEP.RETURNING_GATE,
+  STEP.FORMAT,
+  STEP.CALENDAR,
+  STEP.SAME_DAY,
+  STEP.INTAKE,
+  STEP.POLICY,
+  STEP.CHECKOUT,
+  STEP.CONFIRMATION
+]
+
+const NEW_NO_SAMEDAY_PATH = [
+  STEP.SERVICE,
+  STEP.RETURNING_GATE,
+  STEP.FORMAT,
+  STEP.CALENDAR,
+  STEP.INTAKE,
+  STEP.POLICY,
+  STEP.CHECKOUT,
+  STEP.CONFIRMATION
+]
+
+const RETURNING_PATH = [
+  STEP.SERVICE,
+  STEP.RETURNING_GATE,
+  STEP.CALENDAR,
+  STEP.INTAKE,
+  STEP.POLICY,
+  STEP.CHECKOUT,
+  STEP.CONFIRMATION
+]
+
+const DIRECT_PATH = [
+  STEP.SERVICE,
+  STEP.CALENDAR,
+  STEP.INTAKE,
+  STEP.POLICY,
+  STEP.CHECKOUT,
+  STEP.CONFIRMATION
+]
+
 export function getPathSteps(state) {
   const service = findService(state.serviceId)
-  if (!service) {
-    return [STEP.SERVICE]
-  }
+  // No service yet — show the maximum possible path as the placeholder
+  // so "Step 1 of 9" reads correctly.
+  if (!service) return FULL_NEW_PATH
 
-  if (!service.consultRequired) {
-    // Direct flow: 7 steps
-    return [
-      STEP.SERVICE,
-      STEP.CALENDAR,
-      STEP.INTAKE,
-      STEP.POLICY,
-      STEP.CHECKOUT,
-      STEP.CONFIRMATION
-    ]
-  }
+  if (!service.consultRequired) return DIRECT_PATH
 
-  // Consult-required service. Need to know returning answer.
+  // Consult-required service. Until the returning gate is answered we don't
+  // know if the path will be 7 (returning) or 8/9 (new). Show the longest.
   if (state.isReturningPatient === null || state.isReturningPatient === undefined) {
-    // Until they answer, only show what's known so far
-    return [STEP.SERVICE, STEP.RETURNING_GATE]
+    return FULL_NEW_PATH
   }
 
-  if (state.isReturningPatient === true) {
-    // Returning patient direct flow
-    return [
-      STEP.SERVICE,
-      STEP.RETURNING_GATE,
-      STEP.CALENDAR,
-      STEP.INTAKE,
-      STEP.POLICY,
-      STEP.CHECKOUT,
-      STEP.CONFIRMATION
-    ]
-  }
+  if (state.isReturningPatient === true) return RETURNING_PATH
 
-  // New / 12+ months: full consult flow with same-day offer
-  return [
-    STEP.SERVICE,
-    STEP.RETURNING_GATE,
-    STEP.FORMAT,
-    STEP.CALENDAR,
-    STEP.SAME_DAY,
-    STEP.INTAKE,
-    STEP.POLICY,
-    STEP.CHECKOUT,
-    STEP.CONFIRMATION
-  ]
+  // New patient: 8 if they declined same-day AND already moved past that
+  // step, 9 otherwise. Keeping SAME_DAY in the path while the user is still
+  // on it (or before it) ensures the bar doesn't shrink under their feet
+  // when they answer the question, and that going Back returns them to the
+  // step they're on.
+  if (state.sameDayProcedure === false) {
+    const sameDayIdx = FULL_NEW_PATH.indexOf(STEP.SAME_DAY)
+    const currentIdx = FULL_NEW_PATH.indexOf(state.currentStep)
+    if (currentIdx > sameDayIdx) return NEW_NO_SAMEDAY_PATH
+  }
+  return FULL_NEW_PATH
 }
 
 export function getStepIndex(state) {

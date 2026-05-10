@@ -13,7 +13,7 @@ export default function PolicyStep() {
   return (
     <div className="screen-enter flex flex-col gap-4">
       <div>
-        <h2 className="font-display text-2xl text-navy mb-1">Cancellation & policies</h2>
+        <h2 className="font-display font-medium text-[26px] text-navy mb-1">Cancellation & policies</h2>
         <p className="text-xs text-navy/60">Please review before continuing.</p>
       </div>
 

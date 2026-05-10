@@ -78,7 +78,7 @@ export default function Confirmation() {
         <div className="mx-auto h-12 w-12 rounded-full bg-navy/5 flex items-center justify-center text-navy">
           <CheckCircle2 size={28} />
         </div>
-        <h2 className="font-display text-2xl text-navy mt-3">You're booked!</h2>
+        <h2 className="font-display font-medium text-[26px] text-navy mt-3">You're booked!</h2>
         {state.intake.email && (
           <p className="text-xs text-navy/60 mt-1">
             A confirmation has been sent to{' '}

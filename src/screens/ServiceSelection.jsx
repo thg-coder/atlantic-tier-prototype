@@ -1,8 +1,9 @@
 import { useEffect, useMemo, useRef, useState } from 'react'
-import { ChevronDown, Search, X, AlertTriangle } from 'lucide-react'
+import { ChevronDown, Search, X, AlertTriangle, Check } from 'lucide-react'
 import { useBooking } from '../state/BookingContext.jsx'
 import { CATEGORIES, SERVICES, findService } from '../mockData.js'
 import { formatPriceUSD } from '../utils/format.js'
+import { PrimaryButton } from '../components/Buttons.jsx'
 
 export default function ServiceSelection() {
   const { state, dispatch, goNext } = useBooking()
@@ -57,21 +58,25 @@ export default function ServiceSelection() {
     })
   }
 
+  // True when downstream state exists that would be cleared by switching services.
+  const hasDownstreamState =
+    !!state.selectedDateKey ||
+    !!state.selectedSlotTime ||
+    state.sameDayProcedure !== null
+
   function clickService(svc) {
-    if (state.serviceId && state.serviceId !== svc.id) {
-      // Past first selection — confirm, since this can drop other state.
+    if (state.serviceId === svc.id) return // same card — no-op
+    if (state.serviceId && state.serviceId !== svc.id && hasDownstreamState) {
       setPendingChange(svc.id)
       return
     }
     dispatch({ type: 'SELECT_SERVICE', serviceId: svc.id })
-    goNext()
   }
 
   function confirmChange() {
     if (!pendingChange) return
     dispatch({ type: 'SELECT_SERVICE', serviceId: pendingChange })
     setPendingChange(null)
-    goNext()
   }
 
   const noMatches = search && filtered.length === 0
@@ -79,7 +84,7 @@ export default function ServiceSelection() {
   return (
     <div className="screen-enter flex flex-col gap-4">
       <div>
-        <h2 className="font-display text-2xl text-navy mb-1">Choose a service</h2>
+        <h2 className="font-display font-medium text-[26px] text-navy mb-1">Choose a service</h2>
         <p className="text-xs text-navy/60">
           Search or browse by category to start your booking.
         </p>
@@ -147,49 +152,68 @@ export default function ServiceSelection() {
               </button>
               {open && (
                 <div className="border-t border-sand-200 divide-y divide-sand-200">
-                  {items.map((s) => (
-                    <button
-                      key={s.id}
-                      type="button"
-                      onClick={() => clickService(s)}
-                      className={
-                        'w-full text-left px-4 py-3 hover:bg-cream transition-colors active:scale-[0.99] ' +
-                        (state.serviceId === s.id ? 'bg-cream' : 'bg-white')
-                      }
-                    >
-                      <div className="flex items-start justify-between gap-3">
-                        <div className="flex-1 min-w-0">
-                          <div className="text-sm font-semibold text-navy">{s.name}</div>
-                          <div className="text-[11px] text-navy/60 mt-0.5 leading-snug">
-                            {s.description}
-                          </div>
-                          <div className="mt-1.5 flex flex-wrap items-center gap-x-2 gap-y-1 text-[11px] text-navy/60">
-                            <span>{s.durationMin} min</span>
-                            <span className="text-navy/30">•</span>
-                            <span className="font-semibold text-navy">
-                              {formatPriceUSD(s.priceUSD)}
-                            </span>
-                            {s.consultRequired && (
-                              <span className="ml-1 inline-flex items-center px-1.5 py-0.5 rounded-full bg-navy/5 text-navy/70 text-[10px] font-medium">
-                                Consultation required
+                  {items.map((s) => {
+                    const isSelected = state.serviceId === s.id
+                    return (
+                      <button
+                        key={s.id}
+                        type="button"
+                        onClick={() => clickService(s)}
+                        aria-pressed={isSelected}
+                        className={
+                          'w-full text-left px-4 py-3 transition-all active:scale-[0.99] border-l-2 ' +
+                          (isSelected
+                            ? 'bg-cream border-l-navy'
+                            : 'bg-white border-l-transparent hover:bg-cream/60')
+                        }
+                      >
+                        <div className="flex items-start justify-between gap-3">
+                          <div className="flex-1 min-w-0">
+                            <div className="flex items-center gap-1.5">
+                              <span className="text-sm font-semibold text-navy">{s.name}</span>
+                              {isSelected && (
+                                <Check
+                                  size={14}
+                                  className="text-navy shrink-0"
+                                  aria-label="Selected"
+                                />
+                              )}
+                            </div>
+                            <div className="text-[11px] text-navy/60 mt-0.5 leading-snug">
+                              {s.description}
+                            </div>
+                            <div className="mt-1.5 flex flex-wrap items-center gap-x-2 gap-y-1 text-[11px] text-navy/60">
+                              <span className="tabular-nums">{s.durationMin} min</span>
+                              <span className="text-navy/30">•</span>
+                              <span className="font-semibold text-navy tabular-nums">
+                                {formatPriceUSD(s.priceUSD)}
                               </span>
-                            )}
-                            {s.inPersonConsultOnly && (
-                              <span className="text-[10px] italic text-navy/50">
-                                (in-person consult only)
-                              </span>
-                            )}
+                              {s.consultRequired && (
+                                <span className="ml-1 inline-flex items-center px-1.5 py-0.5 rounded-full bg-navy/5 text-navy/70 text-[10px] font-medium">
+                                  Consultation required
+                                </span>
+                              )}
+                              {s.inPersonConsultOnly && (
+                                <span className="text-[10px] italic text-navy/50">
+                                  (in-person consult only)
+                                </span>
+                              )}
+                            </div>
                           </div>
                         </div>
-                      </div>
-                    </button>
-                  ))}
+                      </button>
+                    )
+                  })}
                 </div>
               )}
             </div>
           )
         })}
       </div>
+
+      <PrimaryButton onClick={goNext} disabled={!state.serviceId}>
+        Continue
+      </PrimaryButton>
 
       {pendingChange && (
         <ServiceChangeConfirm
@@ -221,7 +245,7 @@ function ServiceChangeConfirm({ onConfirm, onCancel }) {
             <AlertTriangle size={18} aria-hidden="true" />
           </div>
           <div>
-            <h3 className="font-display text-lg text-navy">Change service?</h3>
+            <h3 className="font-display font-medium text-lg text-navy">Change service?</h3>
             <p className="mt-1 text-xs text-navy/70 leading-relaxed">
               Changing your service will reset your time selection and same-day procedure
               choice. Your contact info will be saved.

@@ -96,7 +96,7 @@ export default function Calendar() {
         >
           <ChevronLeft size={18} />
         </button>
-        <span className="font-display text-lg text-navy">
+        <span className="font-display font-medium text-lg text-navy">
           {monthLabel(view.year, view.monthIdx)}
         </span>
         <button
