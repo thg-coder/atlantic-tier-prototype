@@ -1,0 +1,57 @@
+# Cloud Build pipeline for the Atlantic prototype.
+#
+# Replace the substitutions below before running, or pass them via
+#   gcloud builds submit --config cloudbuild.yaml \
+#     --substitutions=_SERVICE_NAME=atlantic-prototype,_REGION=us-central1
+#
+# The image is pushed to Artifact Registry (default Cloud Run pattern) and
+# deployed to the named Cloud Run service. PROJECT_ID is provided automatically
+# by Cloud Build.
+
+substitutions:
+  _SERVICE_NAME: atlantic-prototype       # Replace: Cloud Run service name
+  _REGION: us-central1                    # Replace: Cloud Run region
+  _REPOSITORY: atlantic                   # Replace: Artifact Registry repo (must exist)
+
+steps:
+  - name: gcr.io/cloud-builders/docker
+    id: Build
+    args:
+      - build
+      - -t
+      - ${_REGION}-docker.pkg.dev/${PROJECT_ID}/${_REPOSITORY}/${_SERVICE_NAME}:$SHORT_SHA
+      - -t
+      - ${_REGION}-docker.pkg.dev/${PROJECT_ID}/${_REPOSITORY}/${_SERVICE_NAME}:latest
+      - .
+
+  - name: gcr.io/cloud-builders/docker
+    id: Push
+    args:
+      - push
+      - --all-tags
+      - ${_REGION}-docker.pkg.dev/${PROJECT_ID}/${_REPOSITORY}/${_SERVICE_NAME}
+
+  - name: gcr.io/google.com/cloudsdktool/cloud-sdk
+    id: Deploy
+    entrypoint: gcloud
+    args:
+      - run
+      - deploy
+      - ${_SERVICE_NAME}
+      - --image=${_REGION}-docker.pkg.dev/${PROJECT_ID}/${_REPOSITORY}/${_SERVICE_NAME}:$SHORT_SHA
+      - --region=${_REGION}
+      - --platform=managed
+      - --allow-unauthenticated
+      - --memory=256Mi
+      - --cpu=1
+      - --min-instances=0
+      - --max-instances=10
+      - --concurrency=80
+      - --timeout=60s
+
+images:
+  - ${_REGION}-docker.pkg.dev/${PROJECT_ID}/${_REPOSITORY}/${_SERVICE_NAME}:$SHORT_SHA
+  - ${_REGION}-docker.pkg.dev/${PROJECT_ID}/${_REPOSITORY}/${_SERVICE_NAME}:latest
+
+options:
+  logging: CLOUD_LOGGING_ONLY
