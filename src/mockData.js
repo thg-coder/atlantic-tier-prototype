@@ -1,6 +1,7 @@
 // Mock data for the prototype. No backend, no API.
 // Practice identity (name, address, phone, branding, etc.) lives in
 // src/siteConfig.js, not here.
+import { siteConfig } from './siteConfig.js'
 
 // Consultation fee fallback. The Confirm/Order/Confirmation screens read
 // siteConfig.consultFeeAmount first and fall back to this if it's undefined.
@@ -79,6 +80,17 @@ export const SERVICES = [
 
 export function findService(id) {
   return SERVICES.find((s) => s.id === id)
+}
+
+// Display label for a procedure-of-interest id. Reads siteConfig.procedureDetails
+// first (covers the 'comprehensive' fallback and any per-deployment relabelling),
+// then falls back to the SERVICES name, then null.
+export function getProcedureLabel(id) {
+  if (!id) return null
+  const fromConfig = siteConfig.procedureDetails?.[id]?.label
+  if (fromConfig) return fromConfig
+  const svc = SERVICES.find((s) => s.id === id)
+  return svc ? svc.name : null
 }
 
 // Deterministic seeded PRNG so availability is stable across navigation.

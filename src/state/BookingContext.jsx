@@ -6,11 +6,11 @@ import { safeGet, safeSet, safeRemove } from '../utils/storage.js'
 import { siteConfig } from '../siteConfig.js'
 
 // Storage keys are namespaced by brandName so multiple deployments on the same
-// origin don't collide. v3: bumped for the Phase D config injection — any v2
-// state from Phase B/C testing is invalidated.
+// origin don't collide. v4: bumped for the Phase B.5 flow restructure (TRUST/
+// EDUCATE → PICK/LEARN); any v3 state with stale step values is invalidated.
 const KEY_NS = siteConfig.brandName.toLowerCase()
-const STORAGE_KEY = `${KEY_NS}_booking_state_v3`
-const SEED_KEY = `${KEY_NS}_seed_v3`
+const STORAGE_KEY = `${KEY_NS}_booking_state_v4`
+const SEED_KEY = `${KEY_NS}_seed_v4`
 
 const BookingContext = createContext(null)
 

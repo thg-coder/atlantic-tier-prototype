@@ -1,6 +1,5 @@
 import { useRef, useState } from 'react'
 import { useBooking } from '../state/BookingContext.jsx'
-import { SERVICES } from '../mockData.js'
 import { FormField, inputClass, inputErrorClass } from '../components/FormField.jsx'
 import { PrimaryButton } from '../components/Buttons.jsx'
 import {
@@ -32,9 +31,9 @@ const REFERRAL_OPTIONS = [
   'Other',
 ]
 
-// budgetRange is optional; everything else is required.
+// budgetRange is optional; everything else is required. (procedureInterest is
+// collected upstream at the PICK step, so it is no longer asked here.)
 const REQUIRED = [
-  'procedureInterest',
   'timeline',
   'priorProcedures',
   'referralSource',
@@ -89,7 +88,6 @@ export default function Qualify() {
   const intake = state.intake
   const [errors, setErrors] = useState({})
   const refs = {
-    procedureInterest: useRef(null),
     timeline: useRef(null),
     priorProcedures: useRef(null),
     referralSource: useRef(null),
@@ -122,7 +120,6 @@ export default function Qualify() {
         return validatePhone(value)
       case 'dob':
         return validateDOB(value)
-      case 'procedureInterest':
       case 'timeline':
       case 'priorProcedures':
       case 'referralSource':
@@ -177,44 +174,14 @@ export default function Qualify() {
     <form className="screen-enter flex flex-col gap-6" onSubmit={handleSubmit} noValidate>
       <div>
         <h2 className="font-display font-semibold text-[28px] leading-[1.12] text-navy">
-          About your consultation
+          Tell us about you
         </h2>
         <p className="mt-1.5 text-[13px] text-navy/60 leading-relaxed">
-          A few questions before we schedule. This information helps us prepare for our time
-          together.
+          A few questions to help us prepare for our time together.
         </p>
       </div>
 
-      {/* 1 — procedure of interest */}
-      <FormField
-        ref={refs.procedureInterest}
-        id="procedureInterest"
-        label="Procedure you’d like to discuss"
-        required
-        error={errors.procedureInterest}
-      >
-        <select
-          id="procedureInterest"
-          name="procedureInterest"
-          value={intake.procedureInterest || ''}
-          onChange={(e) => {
-            update({ procedureInterest: e.target.value || null })
-            clearError('procedureInterest')
-          }}
-          onBlur={() => handleBlur('procedureInterest')}
-          className={inputClass + (errors.procedureInterest ? ' ' + inputErrorClass : '')}
-          aria-invalid={!!errors.procedureInterest}
-        >
-          <option value="">Select…</option>
-          {SERVICES.map((s) => (
-            <option key={s.id} value={s.id}>
-              {s.name}
-            </option>
-          ))}
-        </select>
-      </FormField>
-
-      {/* 2 — timeline */}
+      {/* 1 — timeline */}
       <FormField
         ref={refs.timeline}
         id="timeline"

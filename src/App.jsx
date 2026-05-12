@@ -9,8 +9,8 @@ import { BackButton } from './components/Buttons.jsx'
 import DemoPageChrome from './components/DemoPageChrome.jsx'
 
 import Land from './screens/Land.jsx'
-import Trust from './screens/Trust.jsx'
-import Educate from './screens/Educate.jsx'
+import Pick from './screens/Pick.jsx'
+import Learn from './screens/Learn.jsx'
 import Qualify from './screens/Qualify.jsx'
 import Schedule from './screens/Schedule.jsx'
 import Confirm from './screens/Confirm.jsx'
@@ -18,8 +18,8 @@ import Confirmation from './screens/Confirmation.jsx'
 
 const SCREENS = {
   [STEP.LAND]: Land,
-  [STEP.TRUST]: Trust,
-  [STEP.EDUCATE]: Educate,
+  [STEP.PICK]: Pick,
+  [STEP.LEARN]: Learn,
   [STEP.QUALIFY]: Qualify,
   [STEP.SCHEDULE]: Schedule,
   [STEP.CONFIRM]: Confirm,

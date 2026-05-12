@@ -1,7 +1,7 @@
 import { useEffect } from 'react'
 import { Video, MapPin } from 'lucide-react'
 import { useBooking } from '../state/BookingContext.jsx'
-import { findService } from '../mockData.js'
+import { findService, getProcedureLabel } from '../mockData.js'
 import { siteConfig } from '../siteConfig.js'
 import ChoiceCard from '../components/ChoiceCard.jsx'
 import Calendar from '../components/Calendar.jsx'
@@ -10,6 +10,7 @@ import { PrimaryButton } from '../components/Buttons.jsx'
 export default function Schedule() {
   const { state, dispatch, goNext } = useBooking()
   const service = findService(state.intake.procedureInterest)
+  const procLabel = getProcedureLabel(state.intake.procedureInterest)
   const globalMode = siteConfig.virtualConsultMode || 'both' // 'both' | 'virtual_only' | 'in_person_only'
   // Per-procedure override beats the global config.
   const inPersonOverride = service?.consultModeOverride === 'in_person'
@@ -64,7 +65,7 @@ export default function Schedule() {
         <p className="mt-1.5 text-[13px] text-navy/60 leading-relaxed">
           You’ll be meeting with{' '}
           <span className="font-medium text-navy/85">{siteConfig.practitionerName}</span>
-          {service ? <> about <span className="font-medium text-navy/85">{service.name}</span></> : null}.
+          {procLabel ? <> about <span className="font-medium text-navy/85">{procLabel}</span></> : null}.
         </p>
       </div>
 

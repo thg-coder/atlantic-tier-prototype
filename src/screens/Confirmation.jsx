@@ -1,6 +1,6 @@
 import { Calendar as CalIcon, CheckCircle2 } from 'lucide-react'
 import { useBooking } from '../state/BookingContext.jsx'
-import { findService, CONSULTATION_FEE } from '../mockData.js'
+import { getProcedureLabel, CONSULTATION_FEE } from '../mockData.js'
 import { siteConfig } from '../siteConfig.js'
 import { formatLongDate, formatTime12h, formatPriceUSD } from '../utils/format.js'
 import { buildICS, downloadICS } from '../utils/ics.js'
@@ -10,8 +10,13 @@ const CONSULT_BLOCK_MINUTES = 45
 
 export default function Confirmation() {
   const { state, reset } = useBooking()
-  const service = findService(state.intake.procedureInterest)
-  const procName = service?.name || 'your procedure'
+  const procLabel = getProcedureLabel(state.intake.procedureInterest)
+  // "General" = the comprehensive fallback (or, defensively, no selection). When
+  // general, copy reads "Your consultation" rather than "Your <procedure> consultation".
+  const isGeneral = !procLabel || state.intake.procedureInterest === 'comprehensive'
+  const patientSubject = isGeneral
+    ? `Your consultation with ${siteConfig.practitionerName}`
+    : `Your ${procLabel} consultation with ${siteConfig.practitionerName}`
   const virtual = state.consultFormat === 'virtual'
   const formatLabel = virtual ? 'Virtual consultation' : 'In-person consultation'
 
@@ -40,7 +45,7 @@ export default function Confirmation() {
       ? `${siteConfig.brandName} — Virtual consultation`
       : siteConfig.practiceAddress
     const description =
-      `${procName} consultation (${virtual ? 'Virtual' : 'In-Person'})` +
+      `${isGeneral ? 'Consultation' : `${procLabel} consultation`} (${virtual ? 'Virtual' : 'In-Person'})` +
       `\nProvider: ${siteConfig.practitionerName}` +
       `\nContact: ${siteConfig.practicePhone}`
     const uid = `booking-${state.intake.procedureInterest || 'consult'}-${state.selectedDateKey}-${state.selectedSlotTime}@rivr.local`
@@ -83,8 +88,8 @@ export default function Confirmation() {
             </div>
           )}
           <div className="text-[12px] text-navy/60">Provider: {siteConfig.practitionerName}</div>
-          {service && (
-            <div className="text-[12px] text-navy/60">Procedure of interest: {service.name}</div>
+          {procLabel && (
+            <div className="text-[12px] text-navy/60">Area of interest: {procLabel}</div>
           )}
           <div className="text-[12px] text-navy/60 mt-1">{locationLine}</div>
         </div>
@@ -143,7 +148,7 @@ export default function Confirmation() {
           <EmailPreview
             from={`${siteConfig.practiceName} <${siteConfig.emailSenderAddress}>`}
             to={`${state.intake.fullName || 'Patient'} <${state.intake.email}>`}
-            subject={`Your ${procName} consultation with ${siteConfig.practitionerName}`}
+            subject={patientSubject}
           >
             <p>Hi {firstName} — your consultation is confirmed.</p>
             <p>
@@ -189,7 +194,7 @@ export default function Confirmation() {
           <EmailPreview
             from={`${siteConfig.emailSenderName} <${siteConfig.emailSenderAddress}>`}
             to={`${siteConfig.practiceName} <${siteConfig.spaInboxAddress}>`}
-            subject={`New consultation booking: ${procName} — ${state.intake.fullName || 'Patient'}`}
+            subject={`New consultation booking: ${procLabel || 'Comprehensive consultation'} — ${state.intake.fullName || 'Patient'}`}
           >
             <p>
               <strong>New consultation booked.</strong>
@@ -204,7 +209,7 @@ export default function Confirmation() {
               <strong>DOB:</strong> {state.intake.dob}
             </p>
             <p>
-              <strong>Procedure of interest:</strong> {service?.name || '—'}
+              <strong>Area of interest:</strong> {procLabel || '—'}
               <br />
               <strong>Timeline:</strong> {state.intake.timeline || '—'}
               <br />

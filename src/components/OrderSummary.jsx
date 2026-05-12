@@ -1,11 +1,11 @@
 import { useBooking } from '../state/BookingContext.jsx'
-import { findService, CONSULTATION_FEE } from '../mockData.js'
+import { getProcedureLabel, CONSULTATION_FEE } from '../mockData.js'
 import { siteConfig } from '../siteConfig.js'
 import { formatPriceUSD, formatLongDate, formatTime12h } from '../utils/format.js'
 
 export default function OrderSummary() {
   const { state } = useBooking()
-  const service = findService(state.intake.procedureInterest)
+  const procLabel = getProcedureLabel(state.intake.procedureInterest)
   const formatLabel = state.consultFormat === 'virtual' ? 'Virtual consultation' : 'In-person consultation'
 
   const feeModel = siteConfig.consultFeeModel || 'paid_nonrefundable'
@@ -26,8 +26,8 @@ export default function OrderSummary() {
         <div className="mt-1.5 text-[15px] font-semibold text-navy">
           {formatLabel} with {siteConfig.practitionerName}
         </div>
-        {service && (
-          <div className="mt-0.5 text-[12px] text-navy/55">Procedure of interest: {service.name}</div>
+        {procLabel && (
+          <div className="mt-0.5 text-[12px] text-navy/55">Area of interest: {procLabel}</div>
         )}
         {dateObj && (
           <div className="text-[12px] text-navy/55 tabular-nums">

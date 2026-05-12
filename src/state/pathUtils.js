@@ -1,27 +1,29 @@
 // The single 6-stage Atlantic flow, plus a terminal CONFIRMATION screen that is
 // NOT counted in the "Step X of 6" progress indicator.
 //
-//   LAND → TRUST → EDUCATE → QUALIFY → SCHEDULE → CONFIRM   (→ CONFIRMATION)
+//   LAND → PICK → LEARN → QUALIFY → SCHEDULE → CONFIRM   (→ CONFIRMATION)
 //
-// There is no path branching anymore — Atlantic books a consultation regardless
-// of new/returning status. A returning patient ready to book a procedure
-// directly is a phone call to the practice, not a path through this funnel.
+// Procedure-of-interest is collected at PICK (step 2), so LEARN (step 3) can
+// render procedure-aware education, gallery, and testimonial content. There is
+// no path branching — Atlantic books a consultation regardless of new/returning
+// status; a returning patient ready to book directly is a phone call, not a
+// path through this funnel.
 
 export const STEP = {
   LAND: 'LAND',
-  TRUST: 'TRUST',
-  EDUCATE: 'EDUCATE',
+  PICK: 'PICK',
+  LEARN: 'LEARN',
   QUALIFY: 'QUALIFY',
   SCHEDULE: 'SCHEDULE',
   CONFIRM: 'CONFIRM',
   CONFIRMATION: 'CONFIRMATION', // terminal — excluded from the step counter
 }
 
-// Constant — no longer state-dependent. Denominator for "Step X of 6" is always 6.
+// Constant — not state-dependent. Denominator for "Step X of 6" is always 6.
 export const PATH_STEPS = [
   STEP.LAND,
-  STEP.TRUST,
-  STEP.EDUCATE,
+  STEP.PICK,
+  STEP.LEARN,
   STEP.QUALIFY,
   STEP.SCHEDULE,
   STEP.CONFIRM,
@@ -29,9 +31,9 @@ export const PATH_STEPS = [
 
 export const STEP_LABELS = {
   LAND: 'Welcome',
-  TRUST: 'Selected work',
-  EDUCATE: 'About the procedure',
-  QUALIFY: 'About your consultation',
+  PICK: 'What brings you in',
+  LEARN: 'Your procedure',
+  QUALIFY: 'About you',
   SCHEDULE: 'Schedule',
   CONFIRM: 'Confirm',
   CONFIRMATION: '', // terminal — no label needed
@@ -39,7 +41,7 @@ export const STEP_LABELS = {
 
 // A currentStep is valid if it's part of the active flow or the terminal screen.
 // Used by the hydration guard to reject stale/unknown steps (e.g. a now-deleted
-// 'RETURNING_GATE' persisted from a previous build).
+// 'TRUST' / 'EDUCATE' persisted from a previous build).
 export function isValidStep(step) {
   return PATH_STEPS.includes(step) || step === STEP.CONFIRMATION
 }
