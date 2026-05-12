@@ -2,8 +2,9 @@ import { useBooking } from '../state/BookingContext.jsx'
 import { siteConfig } from '../siteConfig.js'
 import { PrimaryButton } from '../components/Buttons.jsx'
 
-// Phase B: hardcoded placeholders. In Phase D these come from siteConfig.
-const SIGNATURE_PROCEDURES = ['Procedure One', 'Procedure Two', 'Procedure Three']
+// Deliberately generic procedure categories — they fit plastic surgery,
+// dermatology, and hybrid practices. Real per-deployment copy comes in Phase D.
+const SIGNATURE_PROCEDURES = ['Facial Rejuvenation', 'Body Contouring', 'Non-Surgical Refinement']
 
 export default function Land() {
   const { goNext } = useBooking()
@@ -14,8 +15,8 @@ export default function Land() {
         <h1 className="font-display font-medium text-[28px] text-navy leading-tight">
           {siteConfig.practitionerName}
         </h1>
-        <p className="mt-1 text-sm text-navy/60">
-          {siteConfig.practiceName} — [practice tagline]
+        <p className="mt-2 text-sm text-navy/70 leading-relaxed">
+          A practice built on training, judgment, and the privilege of being chosen carefully.
         </p>
       </div>
 
@@ -45,7 +46,12 @@ export default function Land() {
         practice. Real copy comes from the client during onboarding.]
       </p>
 
-      <PrimaryButton onClick={goNext}>Begin</PrimaryButton>
+      <div>
+        <p className="text-[11px] text-navy/50 mb-2">
+          Consultations are conducted in person or virtually, by appointment.
+        </p>
+        <PrimaryButton onClick={goNext}>Begin</PrimaryButton>
+      </div>
     </div>
   )
 }

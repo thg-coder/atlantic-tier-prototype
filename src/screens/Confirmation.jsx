@@ -57,12 +57,11 @@ export default function Confirmation() {
         <h2 className="font-display font-medium text-[26px] text-navy mt-3">
           Your consultation is confirmed
         </h2>
-        {state.intake.email && (
-          <p className="text-xs text-navy/60 mt-1">
-            A confirmation has been sent to{' '}
-            <span className="font-semibold text-navy">{state.intake.email}</span>
-          </p>
-        )}
+        <p className="text-xs text-navy/60 mt-2 leading-relaxed">
+          A confirmation has been sent to{' '}
+          <span className="font-semibold text-navy">{state.intake.email || 'your email'}</span>{' '}
+          with details, what to bring, and how to reach us if anything changes.
+        </p>
       </div>
 
       <div className="rounded-lg border border-sand-200 bg-cream/40 p-4 space-y-3">

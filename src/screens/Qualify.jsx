@@ -166,10 +166,11 @@ export default function Qualify() {
     <form className="screen-enter flex flex-col gap-5" onSubmit={handleSubmit} noValidate>
       <div>
         <h2 className="font-display font-medium text-[26px] text-navy mb-1 leading-tight">
-          Tell us about you
+          About your consultation
         </h2>
         <p className="text-xs text-navy/60">
-          A few questions so we can prepare for your consultation.
+          A few questions before we schedule. This information helps us prepare for our time
+          together.
         </p>
       </div>
 
@@ -177,7 +178,7 @@ export default function Qualify() {
       <FormField
         ref={refs.procedureInterest}
         id="procedureInterest"
-        label="Which procedure are you interested in?"
+        label="Procedure you’d like to discuss"
         required
         error={errors.procedureInterest}
       >
@@ -206,7 +207,7 @@ export default function Qualify() {
       <FormField
         ref={refs.timeline}
         id="timeline"
-        label="What’s your timeline?"
+        label="How are you approaching this?"
         required
         error={errors.timeline}
       >
@@ -226,7 +227,7 @@ export default function Qualify() {
       <FormField
         ref={refs.priorProcedures}
         id="priorProcedures"
-        label="Have you had prior cosmetic surgery or aesthetic procedures?"
+        label="Have you had cosmetic surgery or aesthetic procedures before?"
         required
         error={errors.priorProcedures}
       >
@@ -246,6 +247,7 @@ export default function Qualify() {
       <FormField
         id="budgetRange"
         label="Approximate budget range (optional)"
+        helper="We ask so we can recommend approaches that fit your circumstances — not to filter patients."
       >
         <select
           id="budgetRange"
@@ -267,7 +269,7 @@ export default function Qualify() {
       <FormField
         ref={refs.referralSource}
         id="referralSource"
-        label="How did you hear about us?"
+        label="How did you find us?"
         required
         error={errors.referralSource}
       >
@@ -294,7 +296,7 @@ export default function Qualify() {
 
       <div className="border-t border-sand-200 pt-4">
         <div className="text-[11px] font-semibold uppercase tracking-wider text-navy/50 mb-3">
-          Your contact details
+          Contact information
         </div>
 
         <div className="flex flex-col gap-4">
@@ -380,7 +382,7 @@ export default function Qualify() {
       </div>
 
       <PrimaryButton type="submit" disabled={!isValid()}>
-        Continue
+        Continue to scheduling
       </PrimaryButton>
     </form>
   )

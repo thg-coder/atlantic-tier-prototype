@@ -22,7 +22,7 @@ function Callout({ title, children }) {
 }
 
 export default function Confirm() {
-  const { dispatch, goNext } = useBooking()
+  const { state, dispatch, goNext } = useBooking()
 
   const [cardNum, setCardNum] = useState('')
   const [exp, setExp] = useState('')
@@ -51,7 +51,9 @@ export default function Confirm() {
     cvc: cvc.length < 3 ? 'Add CVC.' : null,
     zip: zip.length < 3 ? 'Add ZIP.' : null,
   }
-  const allValid = !errors.card && !errors.exp && !errors.cvc && !errors.zip
+  const cardValid = !errors.card && !errors.exp && !errors.cvc && !errors.zip
+  const policyAgreed = state.policyAgreed === true
+  const canSubmit = cardValid && policyAgreed
 
   function showError(field) {
     return touched[field] && errors[field]
@@ -62,7 +64,7 @@ export default function Confirm() {
 
   function submit() {
     setTouched({ card: true, exp: true, cvc: true, zip: true })
-    if (!allValid) return
+    if (!canSubmit) return
     setSubmitting(true)
     setTimeout(() => {
       dispatch({ type: 'SET_PAYMENT', last4: cardDigits.slice(-4) })
@@ -75,7 +77,7 @@ export default function Confirm() {
     <div className="screen-enter flex flex-col gap-4">
       <div>
         <h2 className="font-display font-medium text-[26px] text-navy mb-1 leading-tight">
-          Confirm &amp; pay
+          Confirm your consultation
         </h2>
         <p className="text-[11px] text-navy/60 inline-flex items-center gap-1">
           <Lock size={11} aria-hidden="true" />
@@ -85,12 +87,33 @@ export default function Confirm() {
 
       <OrderSummary />
 
-      <Callout title="Cancellations &amp; reschedules">
-        <p>[Policy callout text — cancellation and reschedule terms. Rewritten in Phase C.]</p>
+      <Callout title="Cancellation">
+        <p>
+          Cancellations made more than 48 hours before your consultation are fully refundable.
+          Cancellations within 48 hours forfeit the consultation fee. Rescheduling without
+          cancellation does not incur a fee.
+        </p>
       </Callout>
-      <Callout title="No-show policy">
-        <p>[Policy callout text — no-show terms. Rewritten in Phase C.]</p>
+      <Callout title="No-show">
+        <p>
+          If you do not arrive within 15 minutes of your scheduled consultation time and have
+          not contacted us, the appointment is treated as a no-show and the consultation fee is
+          forfeited.
+        </p>
       </Callout>
+
+      <label className="flex items-start gap-2 cursor-pointer">
+        <input
+          type="checkbox"
+          checked={policyAgreed}
+          onChange={(e) => dispatch({ type: 'SET_POLICY_AGREED', value: e.target.checked })}
+          className="mt-0.5 h-4 w-4 rounded border-sand-300 text-navy focus:ring-navy"
+        />
+        <span className="text-xs text-navy/80 leading-relaxed">
+          I have read and agree to the cancellation and no-show policy.{' '}
+          <span className="text-red-600">*</span>
+        </span>
+      </label>
 
       <div className="rounded-lg border border-sand-200 bg-white p-4 space-y-3">
         <div className="flex items-center justify-between">
@@ -162,26 +185,33 @@ export default function Confirm() {
         </FormField>
       </div>
 
-      <button
-        type="button"
-        disabled={!allValid || submitting}
-        onClick={submit}
-        className={
-          'w-full py-3 rounded-lg text-sm font-semibold tracking-wide text-white transition-all ' +
-          'bg-navy hover:bg-navy-600 active:scale-[0.99] disabled:bg-navy/30 disabled:cursor-not-allowed ' +
-          (submitting ? ' opacity-80' : '')
-        }
-        aria-busy={submitting}
-      >
-        {submitting ? (
-          <span className="inline-flex items-center justify-center gap-2">
-            <span className="h-3 w-3 rounded-full border-2 border-white/40 border-t-white animate-spin" />
-            Processing…
-          </span>
-        ) : (
-          `Confirm and Pay ${formatPriceUSD(CONSULTATION_FEE)}`
+      <div>
+        <button
+          type="button"
+          disabled={!canSubmit || submitting}
+          onClick={submit}
+          className={
+            'w-full py-3 rounded-lg text-sm font-semibold tracking-wide text-white transition-all ' +
+            'bg-navy hover:bg-navy-600 active:scale-[0.99] disabled:bg-navy/30 disabled:cursor-not-allowed ' +
+            (submitting ? ' opacity-80' : '')
+          }
+          aria-busy={submitting}
+        >
+          {submitting ? (
+            <span className="inline-flex items-center justify-center gap-2">
+              <span className="h-3 w-3 rounded-full border-2 border-white/40 border-t-white animate-spin" />
+              Processing…
+            </span>
+          ) : (
+            `Confirm and Pay ${formatPriceUSD(CONSULTATION_FEE)}`
+          )}
+        </button>
+        {cardValid && !policyAgreed && (
+          <p className="mt-2 text-[11px] font-medium text-navy/60">
+            Please review and acknowledge the policy above to continue.
+          </p>
         )}
-      </button>
+      </div>
     </div>
   )
 }

@@ -6,19 +6,6 @@
 // siteConfig — for now it's a single Atlantic-tier flat fee.)
 export const CONSULTATION_FEE = 150
 
-export const PRACTITIONER = {
-  name: 'Dr. Sarah Chen, MD',
-  shortName: 'Dr. Sarah Chen',
-  title: 'Board-Certified Dermatologist'
-}
-
-export const CATEGORIES = [
-  { id: 'injectables', name: 'Injectables' },
-  { id: 'skin', name: 'Skin Treatments' },
-  { id: 'hair-body', name: 'Hair & Body' },
-  { id: 'wellness', name: 'Wellness' }
-]
-
 // Each service: id, category, name, description, durationMin, priceUSD,
 // consultModeOverride ('in_person' forces in-person consultation; null = both
 // allowed). Phase D will layer a global siteConfig.virtualConsultMode beneath
