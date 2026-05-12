@@ -1,26 +1,37 @@
 import { useState } from 'react'
 import { CreditCard, Lock } from 'lucide-react'
 import { useBooking } from '../state/BookingContext.jsx'
-import { CONSULTATION_FEE, SAME_DAY_DEPOSIT } from '../mockData.js'
-import { getCheckoutScenario } from '../state/pathUtils.js'
-import { formatCardNumber, formatCVC, formatExpiry, formatZIP, formatPriceUSD } from '../utils/format.js'
+import { CONSULTATION_FEE } from '../mockData.js'
+import {
+  formatCardNumber,
+  formatCVC,
+  formatExpiry,
+  formatZIP,
+  formatPriceUSD,
+} from '../utils/format.js'
 import OrderSummary from '../components/OrderSummary.jsx'
 import { FormField, inputClass, inputErrorClass } from '../components/FormField.jsx'
 
-export default function Checkout() {
-  const { state, dispatch, goNext } = useBooking()
-  const scenario = getCheckoutScenario(state)
-  const totalToday =
-    scenario === 'A' ? CONSULTATION_FEE : scenario === 'B' ? CONSULTATION_FEE + SAME_DAY_DEPOSIT : 0
+function Callout({ title, children }) {
+  return (
+    <div className="rounded-lg bg-cream border border-sand-200 px-4 py-3">
+      <div className="text-[11px] font-semibold uppercase tracking-wider text-navy/60">{title}</div>
+      <div className="mt-1 text-xs text-navy/80 leading-relaxed">{children}</div>
+    </div>
+  )
+}
 
-  const [card, setCard] = useState('')
+export default function Confirm() {
+  const { dispatch, goNext } = useBooking()
+
+  const [cardNum, setCardNum] = useState('')
   const [exp, setExp] = useState('')
   const [cvc, setCvc] = useState('')
   const [zip, setZip] = useState('')
   const [touched, setTouched] = useState({})
   const [submitting, setSubmitting] = useState(false)
 
-  const cardDigits = card.replace(/\D/g, '')
+  const cardDigits = cardNum.replace(/\D/g, '')
   const expDigits = exp.replace(/\D/g, '')
   const errors = {
     card: cardDigits.length < 13 ? 'Card number looks incomplete.' : null,
@@ -34,25 +45,17 @@ export default function Checkout() {
             const now = new Date()
             const fullYear = 2000 + yy
             const expDate = new Date(fullYear, mm, 0)
-            if (expDate < new Date(now.getFullYear(), now.getMonth(), 1))
-              return 'Card is expired.'
+            if (expDate < new Date(now.getFullYear(), now.getMonth(), 1)) return 'Card is expired.'
             return null
           })(),
     cvc: cvc.length < 3 ? 'Add CVC.' : null,
-    zip: zip.length < 3 ? 'Add ZIP.' : null
+    zip: zip.length < 3 ? 'Add ZIP.' : null,
   }
-
   const allValid = !errors.card && !errors.exp && !errors.cvc && !errors.zip
-
-  const buttonLabel =
-    scenario === 'C'
-      ? 'Save Card and Book'
-      : `Pay ${formatPriceUSD(totalToday)} and Book`
 
   function showError(field) {
     return touched[field] && errors[field]
   }
-
   function blur(field) {
     setTouched((t) => ({ ...t, [field]: true }))
   }
@@ -62,8 +65,7 @@ export default function Checkout() {
     if (!allValid) return
     setSubmitting(true)
     setTimeout(() => {
-      const last4 = cardDigits.slice(-4)
-      dispatch({ type: 'SET_PAYMENT', last4 })
+      dispatch({ type: 'SET_PAYMENT', last4: cardDigits.slice(-4) })
       setSubmitting(false)
       goNext()
     }, 1200)
@@ -72,14 +74,23 @@ export default function Checkout() {
   return (
     <div className="screen-enter flex flex-col gap-4">
       <div>
-        <h2 className="font-display font-medium text-[26px] text-navy mb-1">Payment</h2>
+        <h2 className="font-display font-medium text-[26px] text-navy mb-1 leading-tight">
+          Confirm &amp; pay
+        </h2>
         <p className="text-[11px] text-navy/60 inline-flex items-center gap-1">
           <Lock size={11} aria-hidden="true" />
-          Secured & encrypted (demo only)
+          Secured &amp; encrypted (demo only)
         </p>
       </div>
 
       <OrderSummary />
+
+      <Callout title="Cancellations &amp; reschedules">
+        <p>[Policy callout text — cancellation and reschedule terms. Rewritten in Phase C.]</p>
+      </Callout>
+      <Callout title="No-show policy">
+        <p>[Policy callout text — no-show terms. Rewritten in Phase C.]</p>
+      </Callout>
 
       <div className="rounded-lg border border-sand-200 bg-white p-4 space-y-3">
         <div className="flex items-center justify-between">
@@ -98,8 +109,8 @@ export default function Checkout() {
             id="card"
             inputMode="numeric"
             autoComplete="cc-number"
-            value={card}
-            onChange={(e) => setCard(formatCardNumber(e.target.value))}
+            value={cardNum}
+            onChange={(e) => setCardNum(formatCardNumber(e.target.value))}
             onBlur={() => blur('card')}
             placeholder="1234 1234 1234 1234"
             className={inputClass + (showError('card') ? ' ' + inputErrorClass : '')}
@@ -108,12 +119,7 @@ export default function Checkout() {
         </FormField>
 
         <div className="grid grid-cols-2 gap-3">
-          <FormField
-            id="exp"
-            label="Expiration"
-            required
-            error={showError('exp') ? errors.exp : null}
-          >
+          <FormField id="exp" label="Expiration" required error={showError('exp') ? errors.exp : null}>
             <input
               id="exp"
               inputMode="numeric"
@@ -126,12 +132,7 @@ export default function Checkout() {
               aria-invalid={!!showError('exp')}
             />
           </FormField>
-          <FormField
-            id="cvc"
-            label="CVC"
-            required
-            error={showError('cvc') ? errors.cvc : null}
-          >
+          <FormField id="cvc" label="CVC" required error={showError('cvc') ? errors.cvc : null}>
             <input
               id="cvc"
               inputMode="numeric"
@@ -178,7 +179,7 @@ export default function Checkout() {
             Processing…
           </span>
         ) : (
-          buttonLabel
+          `Confirm and Pay ${formatPriceUSD(CONSULTATION_FEE)}`
         )}
       </button>
     </div>

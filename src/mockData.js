@@ -2,10 +2,9 @@
 // Practice identity (name, address, phone, branding, etc.) lives in
 // src/siteConfig.js, not here.
 
-export const CONSULTATION_FEE = 75
-/* TODO: Phase B — delete this constant along with the SameDayOffer screen and
-   all same-day-deposit logic (the consult-only spec has no same-day deposit). */
-export const SAME_DAY_DEPOSIT = 150
+// Consultation fee charged at booking. (Phase D makes this configurable via
+// siteConfig — for now it's a single Atlantic-tier flat fee.)
+export const CONSULTATION_FEE = 150
 
 export const PRACTITIONER = {
   name: 'Dr. Sarah Chen, MD',

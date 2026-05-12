@@ -1,9 +1,13 @@
 import { useBooking } from '../state/BookingContext.jsx'
-import { STEP_LABELS } from '../state/pathUtils.js'
+import { PATH_STEPS, STEP, STEP_LABELS } from '../state/pathUtils.js'
 
 export default function ProgressBar() {
-  const { pathSteps, stepIndex, state } = useBooking()
-  const total = pathSteps.length
+  const { stepIndex, state } = useBooking()
+
+  // Terminal screen has no progress bar.
+  if (state.currentStep === STEP.CONFIRMATION) return null
+
+  const total = PATH_STEPS.length // always 6
   const current = stepIndex + 1
   const currentLabel = STEP_LABELS[state.currentStep] || ''
 
@@ -23,11 +27,11 @@ export default function ProgressBar() {
         <span className="text-[11px] font-medium text-navy/70">{currentLabel}</span>
       </div>
       <div className="flex gap-1" aria-hidden="true">
-        {pathSteps.map((s, i) => {
+        {PATH_STEPS.map((s, i) => {
           const reached = i <= stepIndex
           return (
             <div
-              key={s + i}
+              key={s}
               className={
                 'h-1.5 flex-1 rounded-full transition-colors ' +
                 (reached ? 'bg-navy' : 'bg-sand-200')
