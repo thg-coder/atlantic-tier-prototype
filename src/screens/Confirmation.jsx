@@ -1,14 +1,7 @@
 import { Calendar as CalIcon, CheckCircle2, RotateCcw } from 'lucide-react'
 import { useBooking } from '../state/BookingContext.jsx'
-import {
-  findService,
-  PRACTITIONER,
-  SPA_NAME,
-  SPA_PHONE,
-  SPA_ADDRESS,
-  CONSULTATION_FEE,
-  SAME_DAY_DEPOSIT
-} from '../mockData.js'
+import { findService, PRACTITIONER, CONSULTATION_FEE, SAME_DAY_DEPOSIT } from '../mockData.js'
+import { siteConfig } from '../siteConfig.js'
 import { getCheckoutScenario, isConsultFlow } from '../state/pathUtils.js'
 import { formatLongDate, formatTime12h, formatPriceUSD } from '../utils/format.js'
 import { buildICS, downloadICS } from '../utils/ics.js'
@@ -38,7 +31,7 @@ export default function Confirmation() {
   const locationLine =
     consult && state.consultFormat === 'virtual'
       ? 'Virtual link will be emailed'
-      : `${SPA_NAME} · ${SPA_ADDRESS}`
+      : `${siteConfig.practiceName} · ${siteConfig.practiceAddress}`
 
   function handleDownloadICS() {
     if (!service || !dateObj || !state.selectedSlotTime) return
@@ -59,8 +52,8 @@ export default function Confirmation() {
         : `Service appointment`) +
       (sameDay ? `\nSame-day procedure reserved.` : '') +
       `\nProvider: ${PRACTITIONER.name}` +
-      `\nContact: ${SPA_PHONE}`
-    const uid = `atlantic-${state.serviceId}-${state.selectedDateKey}-${state.selectedSlotTime}@rivr.local`
+      `\nContact: ${siteConfig.practicePhone}`
+    const uid = `booking-${state.serviceId}-${state.selectedDateKey}-${state.selectedSlotTime}@rivr.local`
     const ics = buildICS({
       uid,
       summary,
@@ -167,7 +160,7 @@ function PatientEmail({ state, service, consult, sameDay, totalPaid, locationLin
     : `Your ${service?.name} appointment with ${PRACTITIONER.shortName}`
   return (
     <EmailPreview
-      from={`${SPA_NAME} <bookings@medspa.example>`}
+      from={`${siteConfig.practiceName} <${siteConfig.emailSenderAddress}>`}
       to={`${state.intake.fullName || 'Patient'} <${state.intake.email}>`}
       subject={subject}
     >
@@ -212,9 +205,9 @@ function PatientEmail({ state, service, consult, sameDay, totalPaid, locationLin
       </p>
       <p>
         To cancel or reschedule, please call us at{' '}
-        <strong>{SPA_PHONE}</strong>. Cancellations cannot be processed by email.
+        <strong>{siteConfig.practicePhone}</strong>. Cancellations cannot be processed by email.
       </p>
-      <p style={{ color: '#0B1E3F99' }}>— {SPA_NAME}</p>
+      <p style={{ color: '#0B1E3F99' }}>— {siteConfig.practiceName}</p>
     </EmailPreview>
   )
 }
@@ -222,8 +215,8 @@ function PatientEmail({ state, service, consult, sameDay, totalPaid, locationLin
 function SpaEmail({ state, service, consult, sameDay, totalPaid, slotLabel, dateObj }) {
   return (
     <EmailPreview
-      from="Atlantic Booking <noreply@rivr.example>"
-      to={`${SPA_NAME} <front-desk@medspa.example>`}
+      from={`${siteConfig.emailSenderName} <${siteConfig.emailSenderAddress}>`}
+      to={`${siteConfig.practiceName} <${siteConfig.spaInboxAddress}>`}
       subject={`New booking: ${service?.name} — ${state.intake.fullName || 'Patient'}`}
     >
       <p>
@@ -237,8 +230,6 @@ function SpaEmail({ state, service, consult, sameDay, totalPaid, slotLabel, date
         <strong>Phone:</strong> {state.intake.phone}
         <br />
         <strong>DOB:</strong> {state.intake.dob}
-        <br />
-        <strong>Status:</strong> {state.intake.newOrReturning} patient
         <br />
         <strong>How they heard:</strong> {state.intake.hearAbout}
       </p>

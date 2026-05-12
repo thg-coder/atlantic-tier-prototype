@@ -1,3 +1,8 @@
+/* TODO: Phase B — delete this screen entirely along with the SAME_DAY step,
+   the sameDayProcedure state, the SAME_DAY_DEPOSIT constant, and the
+   getCheckoutScenario 'B' branch. The consult-only spec has no same-day
+   procedure deposit. Left intact for now so the build stays green between
+   phases. */
 import { Sparkles, CheckCircle2, MinusCircle } from 'lucide-react'
 import { useBooking } from '../state/BookingContext.jsx'
 import { SAME_DAY_DEPOSIT } from '../mockData.js'

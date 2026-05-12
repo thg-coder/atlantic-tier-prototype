@@ -7,7 +7,9 @@ import { PrimaryButton } from '../components/Buttons.jsx'
 export default function ConsultationFormat() {
   const { state, dispatch, goNext } = useBooking()
   const service = findService(state.serviceId)
-  const inPersonOnly = !!service?.inPersonConsultOnly
+  // 'in_person' override forces in-person; null allows both. Phase D will layer
+  // a global siteConfig.virtualConsultMode beneath this per-service override.
+  const inPersonOnly = service?.consultModeOverride === 'in_person'
 
   function pick(format) {
     if (format === 'virtual' && inPersonOnly) return

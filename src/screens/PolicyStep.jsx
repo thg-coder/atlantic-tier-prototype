@@ -1,6 +1,6 @@
 import { useBooking } from '../state/BookingContext.jsx'
 import { isConsultFlow, getCheckoutScenario } from '../state/pathUtils.js'
-import { SPA_PHONE } from '../mockData.js'
+import { siteConfig } from '../siteConfig.js'
 import { PrimaryButton } from '../components/Buttons.jsx'
 
 export default function PolicyStep() {
@@ -20,8 +20,8 @@ export default function PolicyStep() {
       <Callout title="Cancellations & reschedules">
         <p>
           All cancellations and reschedules must be handled by calling{' '}
-          <span className="font-semibold text-navy">{SPA_PHONE}</span> directly. We do not
-          process cancellations through this widget.
+          <span className="font-semibold text-navy">{siteConfig.practicePhone}</span> directly. We do
+          not process cancellations through this widget.
         </p>
       </Callout>
 

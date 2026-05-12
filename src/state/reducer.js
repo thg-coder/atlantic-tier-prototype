@@ -14,7 +14,6 @@ export const initialState = {
     email: '',
     phone: '',
     dob: '',
-    newOrReturning: '',
     reason: '',
     hearAbout: '',
     conditions: '',
@@ -53,17 +52,20 @@ export function reducer(state, action) {
         return {
           ...state,
           serviceId: action.serviceId,
-          // If switching to in-person-only and user previously had virtual, drop it
+          // If switching to an in-person-only consult and user previously had virtual, drop it
           consultFormat:
-            newService.inPersonConsultOnly && state.consultFormat === 'virtual'
+            newService.consultModeOverride === 'in_person' && state.consultFormat === 'virtual'
               ? null
               : state.consultFormat
         }
       }
       // Different service: cascade-invalidate slot, sameDay, format if context changes.
       const oldService = findService(state.serviceId)
-      const wasConsult = !!(oldService && oldService.consultRequired)
-      const willBeConsult = newService.consultRequired
+      // Phase A: every service is consult-led (per-service "consult required"
+      // flag removed). The wasConsult / willBeConsult booleans are kept so the
+      // existing branch structure stays intact; Phase B simplifies this.
+      const wasConsult = !!oldService
+      const willBeConsult = true
       let next = {
         ...state,
         serviceId: action.serviceId,
@@ -78,8 +80,8 @@ export function reducer(state, action) {
         next.consultFormat = null
         next.isReturningPatient = null
       } else {
-        // Consult required. If new service is in-person-only and user had virtual, drop format.
-        if (newService.inPersonConsultOnly && state.consultFormat === 'virtual') {
+        // If the new service's consult is in-person-only and user had virtual, drop format.
+        if (newService.consultModeOverride === 'in_person' && state.consultFormat === 'virtual') {
           next.consultFormat = null
         }
         // If switching from direct to consult, returning answer hasn't been gathered yet.

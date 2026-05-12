@@ -1,6 +1,8 @@
 // Build a minimal valid iCalendar (RFC 5545) file as a string,
 // then trigger a download in the browser.
 
+import { siteConfig } from '../siteConfig.js'
+
 function pad(n) {
   return String(n).padStart(2, '0')
 }
@@ -28,7 +30,7 @@ export function buildICS({ uid, summary, description, location, startLocal, endL
   const lines = [
     'BEGIN:VCALENDAR',
     'VERSION:2.0',
-    'PRODID:-//Atlantic Booking//EN',
+    `PRODID:-//${siteConfig.brandName} Booking//EN`,
     'CALSCALE:GREGORIAN',
     'METHOD:PUBLISH',
     'BEGIN:VEVENT',

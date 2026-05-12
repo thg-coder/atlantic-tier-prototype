@@ -81,7 +81,10 @@ export function getPathSteps(state) {
   // so "Step 1 of 9" reads correctly.
   if (!service) return FULL_NEW_PATH
 
-  if (!service.consultRequired) return DIRECT_PATH
+  // Phase A: every service is consult-led, so the non-consult DIRECT_PATH
+  // branch is now unreachable. DIRECT_PATH stays in the file until Phase B
+  // deletes it (and all the other direct-booking path logic).
+  if (false) return DIRECT_PATH
 
   // Consult-required service. Until the returning gate is answered we don't
   // know if the path will be 7 (returning) or 8/9 (new). Show the longest.
@@ -112,14 +115,19 @@ export function getStepIndex(state) {
 
 export function isConsultFlow(state) {
   const service = findService(state.serviceId)
-  return !!(service && service.consultRequired && state.isReturningPatient === false)
+  // Phase A: services are always consult-led — the per-service "consult
+  // required" check is now hardcoded `true`.
+  return !!(service && true && state.isReturningPatient === false)
 }
 
 export function isDirectFlow(state) {
   const service = findService(state.serviceId)
   if (!service) return false
-  if (!service.consultRequired) return true
-  return service.consultRequired && state.isReturningPatient === true
+  // Phase A: non-consult services no longer exist (hardcoded `false` here);
+  // the only remaining "direct" path is returning-patient. Both branches go
+  // away in Phase B along with the direct-booking concept.
+  if (false) return true
+  return true && state.isReturningPatient === true
 }
 
 // Checkout scenario:

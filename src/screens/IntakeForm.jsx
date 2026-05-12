@@ -31,7 +31,6 @@ export default function IntakeForm() {
     email: useRef(null),
     phone: useRef(null),
     dob: useRef(null),
-    newOrReturning: useRef(null),
     hearAbout: useRef(null),
     healthAck: useRef(null)
   }
@@ -59,8 +58,6 @@ export default function IntakeForm() {
         return validatePhone(value)
       case 'dob':
         return validateDOB(value)
-      case 'newOrReturning':
-        return validateRequired(value, 'This selection')
       case 'hearAbout':
         return validateRequired(value, 'This selection')
       case 'healthAck':
@@ -81,7 +78,7 @@ export default function IntakeForm() {
   }
 
   function isValid() {
-    const required = ['fullName', 'email', 'phone', 'dob', 'newOrReturning', 'hearAbout']
+    const required = ['fullName', 'email', 'phone', 'dob', 'hearAbout']
     if (procedureDay) required.push('healthAck')
     for (const f of required) {
       if (validateField(f, intake[f])) return false
@@ -91,7 +88,7 @@ export default function IntakeForm() {
 
   function handleSubmit(e) {
     if (e) e.preventDefault()
-    const required = ['fullName', 'email', 'phone', 'dob', 'newOrReturning', 'hearAbout']
+    const required = ['fullName', 'email', 'phone', 'dob', 'hearAbout']
     if (procedureDay) required.push('healthAck')
     const next = {}
     for (const f of required) {
@@ -208,39 +205,6 @@ export default function IntakeForm() {
           className={inputClass + (errors.dob ? ' ' + inputErrorClass : '')}
           aria-invalid={!!errors.dob}
         />
-      </FormField>
-
-      <FormField
-        ref={refs.newOrReturning}
-        id="newOrReturning"
-        label="New or returning patient"
-        required
-        error={errors.newOrReturning}
-      >
-        <div className="flex gap-2">
-          {['New', 'Returning'].map((v) => {
-            const selected = intake.newOrReturning === v
-            return (
-              <button
-                key={v}
-                type="button"
-                onClick={() => {
-                  update({ newOrReturning: v })
-                  clearError('newOrReturning')
-                }}
-                className={
-                  'flex-1 py-2 rounded-md text-sm font-medium border transition-colors ' +
-                  (selected
-                    ? 'bg-navy text-white border-navy'
-                    : 'bg-white text-navy border-sand-200 hover:border-navy/40')
-                }
-                aria-pressed={selected}
-              >
-                {v}
-              </button>
-            )
-          })}
-        </div>
       </FormField>
 
       <FormField id="reason" label="Reason for visit / goals (optional)">

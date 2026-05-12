@@ -188,12 +188,11 @@ export default function ServiceSelection() {
                               <span className="font-semibold text-navy tabular-nums">
                                 {formatPriceUSD(s.priceUSD)}
                               </span>
-                              {s.consultRequired && (
-                                <span className="ml-1 inline-flex items-center px-1.5 py-0.5 rounded-full bg-navy/5 text-navy/70 text-[10px] font-medium">
-                                  Consultation required
-                                </span>
-                              )}
-                              {s.inPersonConsultOnly && (
+                              {/* Every service is consult-led post-refactor. */}
+                              <span className="ml-1 inline-flex items-center px-1.5 py-0.5 rounded-full bg-navy/5 text-navy/70 text-[10px] font-medium">
+                                Consultation required
+                              </span>
+                              {s.consultModeOverride === 'in_person' && (
                                 <span className="text-[10px] italic text-navy/50">
                                   (in-person consult only)
                                 </span>

@@ -1,10 +1,10 @@
-// Atlantic prototype — all mock data lives here. No backend, no API.
-
-export const SPA_NAME = '[Med Spa Name]'
-export const SPA_PHONE = '[Spa Phone Number]'
-export const SPA_ADDRESS = '[Med Spa Address]'
+// Mock data for the prototype. No backend, no API.
+// Practice identity (name, address, phone, branding, etc.) lives in
+// src/siteConfig.js, not here.
 
 export const CONSULTATION_FEE = 75
+/* TODO: Phase B — delete this constant along with the SameDayOffer screen and
+   all same-day-deposit logic (the consult-only spec has no same-day deposit). */
 export const SAME_DAY_DEPOSIT = 150
 
 export const PRACTITIONER = {
@@ -21,7 +21,9 @@ export const CATEGORIES = [
 ]
 
 // Each service: id, category, name, description, durationMin, priceUSD,
-// consultRequired, inPersonConsultOnly
+// consultModeOverride ('in_person' forces in-person consultation; null = both
+// allowed). Phase D will layer a global siteConfig.virtualConsultMode beneath
+// this.
 export const SERVICES = [
   {
     id: 'botox',
@@ -30,8 +32,7 @@ export const SERVICES = [
     description: 'Smooths fine lines on the forehead, brow, and around the eyes.',
     durationMin: 30,
     priceUSD: 480,
-    consultRequired: true,
-    inPersonConsultOnly: false
+    consultModeOverride: null
   },
   {
     id: 'filler',
@@ -40,8 +41,7 @@ export const SERVICES = [
     description: 'Restores volume and contour to lips, cheeks, and under-eye areas.',
     durationMin: 45,
     priceUSD: 700,
-    consultRequired: true,
-    inPersonConsultOnly: false
+    consultModeOverride: null
   },
   {
     id: 'microneedling',
@@ -50,8 +50,7 @@ export const SERVICES = [
     description: 'Stimulates collagen for firmer, brighter skin and refined texture.',
     durationMin: 60,
     priceUSD: 400,
-    consultRequired: true,
-    inPersonConsultOnly: false
+    consultModeOverride: null
   },
   {
     id: 'hydrafacial',
@@ -60,8 +59,7 @@ export const SERVICES = [
     description: 'Cleanses, exfoliates, and hydrates for an instant healthy glow.',
     durationMin: 60,
     priceUSD: 200,
-    consultRequired: false,
-    inPersonConsultOnly: false
+    consultModeOverride: null
   },
   {
     id: 'chemical-peel',
@@ -70,8 +68,7 @@ export const SERVICES = [
     description: 'Resurfaces skin to improve tone, clarity, and texture.',
     durationMin: 45,
     priceUSD: 250,
-    consultRequired: true,
-    inPersonConsultOnly: false
+    consultModeOverride: null
   },
   {
     id: 'laser-hair',
@@ -80,8 +77,7 @@ export const SERVICES = [
     description: 'Targeted reduction of unwanted hair with long-lasting results.',
     durationMin: 30,
     priceUSD: 200,
-    consultRequired: true,
-    inPersonConsultOnly: true
+    consultModeOverride: 'in_person'
   },
   {
     id: 'prp',
@@ -90,8 +86,7 @@ export const SERVICES = [
     description: 'Platelet-rich plasma therapy to support natural hair regrowth.',
     durationMin: 60,
     priceUSD: 900,
-    consultRequired: true,
-    inPersonConsultOnly: true
+    consultModeOverride: 'in_person'
   },
   {
     id: 'iv-therapy',
@@ -100,8 +95,7 @@ export const SERVICES = [
     description: 'Custom hydration and vitamin infusion for energy and recovery.',
     durationMin: 45,
     priceUSD: 175,
-    consultRequired: false,
-    inPersonConsultOnly: false
+    consultModeOverride: null
   }
 ]
 
