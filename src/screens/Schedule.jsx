@@ -56,22 +56,22 @@ export default function Schedule() {
     !!state.consultFormat && !!state.selectedDateKey && !!state.selectedSlotTime
 
   return (
-    <div className="screen-enter flex flex-col gap-5">
+    <div className="screen-enter flex flex-col gap-6">
       <div>
-        <h2 className="font-display font-medium text-[26px] text-navy mb-1 leading-tight">
-          Schedule your consultation
+        <h2 className="font-display font-semibold text-[28px] leading-[1.12] text-navy">
+          Reserve your consultation
         </h2>
-        <p className="text-xs text-navy/60">
+        <p className="mt-1.5 text-[13px] text-navy/60 leading-relaxed">
           You’ll be meeting with{' '}
-          <span className="font-medium text-navy">{siteConfig.practitionerName}</span>
-          {service ? <> about <span className="font-medium text-navy">{service.name}</span></> : null}.
+          <span className="font-medium text-navy/85">{siteConfig.practitionerName}</span>
+          {service ? <> about <span className="font-medium text-navy/85">{service.name}</span></> : null}.
         </p>
       </div>
 
       {showPicker ? (
         /* Consultation format picker */
-        <div className="flex flex-col gap-2">
-          <div className="text-[11px] font-semibold uppercase tracking-wider text-navy/50">
+        <div className="flex flex-col gap-2.5">
+          <div className="text-[10px] font-semibold uppercase tracking-[0.16em] text-navy/45">
             Consultation format
           </div>
           <ChoiceCard
@@ -92,7 +92,7 @@ export default function Schedule() {
           />
         </div>
       ) : (
-        <div className="rounded-md bg-cream border border-sand-200 px-3 py-2 text-[11px] text-navy/70">
+        <div className="rounded-lg bg-cream border border-navy/10 px-4 py-2.5 text-[12px] text-navy/65">
           {inPersonOverride
             ? 'In-person consultation required for this procedure.'
             : `This consultation will be conducted ${lockedFormatLabel}.`}
@@ -100,12 +100,12 @@ export default function Schedule() {
       )}
 
       {state.formatChangedBanner && (
-        <div className="rounded-md bg-amber-50 border border-amber-200 px-3 py-2 text-[11px] text-amber-900 flex items-start justify-between gap-2">
+        <div className="rounded-lg bg-amber-50 border border-amber-200 px-4 py-2.5 text-[12px] text-amber-900 flex items-start justify-between gap-2">
           <span>Format updated — please confirm your time slot.</span>
           <button
             type="button"
             onClick={() => dispatch({ type: 'CLEAR_FORMAT_BANNER' })}
-            className="text-amber-900/70 hover:text-amber-900 text-xs font-semibold"
+            className="text-amber-900/60 hover:text-amber-900 text-xs font-semibold"
             aria-label="Dismiss"
           >
             ✕
@@ -114,8 +114,8 @@ export default function Schedule() {
       )}
 
       {/* Date + time */}
-      <div className="flex flex-col gap-2">
-        <div className="text-[11px] font-semibold uppercase tracking-wider text-navy/50">
+      <div className="flex flex-col gap-2.5">
+        <div className="text-[10px] font-semibold uppercase tracking-[0.16em] text-navy/45">
           Pick a date &amp; time
         </div>
         <Calendar />

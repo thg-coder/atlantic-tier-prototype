@@ -80,7 +80,7 @@ export default function Calendar() {
   }
 
   return (
-    <div className="space-y-4">
+    <div className="space-y-4 rounded-xl border border-navy/10 bg-white shadow-card p-4">
       <div className="flex items-center justify-between">
         <button
           type="button"
@@ -91,12 +91,12 @@ export default function Calendar() {
                 : { year: v.year, monthIdx: v.monthIdx - 1 }
             )
           }
-          className="p-2 rounded-md hover:bg-sand-100 text-navy/70"
+          className="p-2 rounded-lg text-navy/55 hover:bg-navy/[0.05] hover:text-navy transition-colors duration-150"
           aria-label="Previous month"
         >
           <ChevronLeft size={18} />
         </button>
-        <span className="font-display font-medium text-lg text-navy">
+        <span className="font-display font-semibold text-[19px] text-navy">
           {monthLabel(view.year, view.monthIdx)}
         </span>
         <button
@@ -108,7 +108,7 @@ export default function Calendar() {
                 : { year: v.year, monthIdx: v.monthIdx + 1 }
             )
           }
-          className="p-2 rounded-md hover:bg-sand-100 text-navy/70"
+          className="p-2 rounded-lg text-navy/55 hover:bg-navy/[0.05] hover:text-navy transition-colors duration-150"
           aria-label="Next month"
         >
           <ChevronRight size={18} />
@@ -117,7 +117,7 @@ export default function Calendar() {
 
       <div className="grid grid-cols-7 gap-1 text-center">
         {DAY_HEADERS.map((d) => (
-          <div key={d} className="text-[10px] font-semibold text-navy/40 uppercase tracking-wider py-1">
+          <div key={d} className="text-[9px] font-semibold text-navy/35 uppercase tracking-[0.12em] pb-1">
             {d}
           </div>
         ))}
@@ -136,13 +136,13 @@ export default function Calendar() {
               onClick={() => pickDay(d)}
               disabled={disabled}
               className={
-                'aspect-square text-sm rounded-md transition-colors flex items-center justify-center ' +
+                'aspect-square text-[13px] tabular-nums rounded-lg transition-all duration-150 flex items-center justify-center ' +
                 (isSelected
-                  ? 'bg-navy text-white font-semibold '
+                  ? 'bg-navy text-white font-semibold shadow-card-active '
                   : disabled
-                    ? 'text-navy/25 cursor-not-allowed '
-                    : 'text-navy hover:bg-sand-100 ') +
-                (isToday && !isSelected ? 'ring-1 ring-navy/40 ' : '')
+                    ? 'text-navy/20 cursor-not-allowed '
+                    : 'text-navy/85 hover:bg-navy/[0.06] ') +
+                (isToday && !isSelected ? 'ring-1 ring-inset ring-navy/30 font-semibold ' : '')
               }
               aria-label={
                 disabled ? `${d.getDate()} no availability` : `Select ${formatLongDate(d)}`
@@ -155,14 +155,14 @@ export default function Calendar() {
       </div>
 
       {selectedDateObj && (
-        <div className="space-y-2">
-          <div className="text-xs font-medium text-navy/70">
+        <div className="space-y-2.5 pt-1">
+          <div className="text-[11px] font-medium text-navy/60">
             Available times for {formatLongDate(selectedDateObj)}{' '}
-            <span className="text-navy/40">(ET)</span>
+            <span className="text-navy/35">(ET)</span>
           </div>
           <div className="flex gap-2 overflow-x-auto no-scrollbar pb-1 -mx-1 px-1">
             {slots.length === 0 && (
-              <div className="text-xs text-navy/50 italic py-2">
+              <div className="text-xs text-navy/45 italic py-2">
                 No times available — try another day.
               </div>
             )}
@@ -176,12 +176,12 @@ export default function Calendar() {
                   onClick={() => !past && pickSlot(t)}
                   disabled={past}
                   className={
-                    'flex-shrink-0 px-3 py-2 rounded-full text-xs font-medium border transition-all ' +
+                    'flex-shrink-0 px-3.5 py-2 rounded-full text-[12px] font-medium tabular-nums border transition-all duration-150 ' +
                     (selected
-                      ? 'bg-navy text-white border-navy '
+                      ? 'bg-navy text-white border-navy shadow-card-active '
                       : past
-                        ? 'bg-sand-100 text-navy/30 border-sand-200 cursor-not-allowed '
-                        : 'bg-white text-navy border-sand-300 hover:border-navy/50 ')
+                        ? 'bg-sand-100 text-navy/25 border-navy/8 cursor-not-allowed '
+                        : 'bg-white text-navy/85 border-navy/12 hover:border-navy/30 hover:bg-navy/[0.03] ')
                   }
                 >
                   {formatTime12h(t)}

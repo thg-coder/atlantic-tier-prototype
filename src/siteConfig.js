@@ -4,8 +4,8 @@ export const siteConfig = {
   // Brand identity
   brandName: 'Atlantic',
   logoUrl: null,                          // null = render brandName as text in Banner
-  primaryColor: '#1a2942',                // brand gradient start (navy default)
-  primaryColorDark: '#0d1729',            // brand gradient end (darker shade)
+  primaryColor: '#142133',                // brand gradient start (navy default — matches Tailwind navy.DEFAULT)
+  primaryColorDark: '#0b1525',            // brand gradient end (darker shade — matches Tailwind navy.900)
 
   // Practice identity
   practiceName: '[Med Spa Name]',

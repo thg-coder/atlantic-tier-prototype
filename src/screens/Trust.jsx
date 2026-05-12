@@ -27,47 +27,60 @@ export default function Trust() {
   const { goNext } = useBooking()
 
   return (
-    <div className="screen-enter flex flex-col gap-6">
+    <div className="screen-enter flex flex-col gap-8">
       {/* Section 1 — selected work */}
       <div>
-        <h2 className="font-display font-medium text-[26px] text-navy mb-1 leading-tight">
+        <h2 className="font-display font-semibold text-[28px] leading-[1.12] text-navy mb-3.5">
           Selected work
         </h2>
-        <div className="mt-3 grid grid-cols-3 gap-2">
+        <div className="grid grid-cols-3 gap-3">
           {Array.from({ length: 6 }).map((_, i) => (
-            <div key={i} className="aspect-square rounded-md bg-gray-200" aria-hidden="true" />
+            <div key={i} className="aspect-[4/5] rounded-lg bg-navy/[0.06]" aria-hidden="true" />
           ))}
         </div>
-        <p className="mt-2 text-[11px] text-navy/50">
+        <p className="mt-3.5 font-display italic text-[15px] text-navy/45 leading-snug">
           Photographs shown with explicit patient permission. Identities are not disclosed.
         </p>
       </div>
 
       {/* Section 2 — what patients say */}
       <div>
-        <h2 className="font-display font-medium text-[20px] text-navy mb-2 leading-tight">
+        <h2 className="font-display font-semibold text-[22px] leading-[1.14] text-navy mb-3">
           What patients say
         </h2>
         <div className="flex flex-col gap-3">
           {TESTIMONIALS.map((t) => (
-            <div key={t.attribution} className="rounded-lg bg-cream border border-sand-200 p-4">
-              <p className="text-sm text-navy/80 leading-relaxed italic">“{t.quote}”</p>
-              <p className="mt-2 text-xs font-semibold text-navy/60">— {t.attribution}</p>
-            </div>
+            <figure
+              key={t.attribution}
+              className="relative rounded-xl bg-cream border border-navy/10 shadow-card pt-7 pb-4 px-5"
+            >
+              <span
+                aria-hidden="true"
+                className="absolute left-4 top-0 font-display text-[44px] leading-none text-navy/15 select-none"
+              >
+                &ldquo;
+              </span>
+              <blockquote className="text-[13.5px] text-navy/80 leading-relaxed">
+                {t.quote}
+              </blockquote>
+              <figcaption className="mt-3 text-[11px] font-semibold uppercase tracking-[0.1em] text-navy/45">
+                {t.attribution}
+              </figcaption>
+            </figure>
           ))}
         </div>
       </div>
 
       {/* Section 3 — credentials */}
       <div>
-        <h2 className="font-display font-medium text-[20px] text-navy mb-2 leading-tight">
+        <h2 className="font-display font-semibold text-[22px] leading-[1.14] text-navy mb-3">
           Credentials
         </h2>
         <div className="flex flex-wrap gap-2">
           {CREDENTIALS.map((c) => (
             <span
               key={c}
-              className="px-3 py-1.5 rounded-full bg-navy/5 text-xs font-medium text-navy/80"
+              className="px-3 py-1.5 rounded-full border border-navy/10 bg-white text-[10.5px] font-semibold uppercase tracking-[0.08em] text-navy/60"
             >
               {c}
             </span>

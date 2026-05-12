@@ -18,9 +18,9 @@ export function PrimaryButton({ children, disabled, onClick, type = 'button', cl
       onClick={handle}
       disabled={disabled}
       className={
-        'w-full py-3 rounded-lg bg-navy text-white text-sm font-semibold tracking-wide ' +
-        'transition-all active:scale-[0.99] hover:bg-navy-600 ' +
-        'disabled:bg-navy/30 disabled:cursor-not-allowed ' +
+        'w-full py-3.5 rounded-xl bg-navy text-white text-sm font-semibold tracking-[0.01em] shadow-cta ' +
+        'transition-all duration-150 ease-out hover:bg-navy-600 active:scale-[0.985] active:shadow-card-active ' +
+        'disabled:bg-navy/25 disabled:text-white/70 disabled:shadow-none disabled:cursor-not-allowed ' +
         className
       }
     >
@@ -35,8 +35,8 @@ export function SecondaryButton({ children, onClick, type = 'button', className 
       type={type}
       onClick={onClick}
       className={
-        'w-full py-3 rounded-lg bg-white text-navy text-sm font-semibold border border-navy/20 ' +
-        'transition-all active:scale-[0.99] hover:bg-sand-100 ' +
+        'w-full py-3.5 rounded-xl bg-transparent text-navy/80 text-sm font-medium border border-navy/15 ' +
+        'transition-all duration-150 ease-out hover:bg-navy/[0.04] hover:text-navy active:scale-[0.985] ' +
         className
       }
     >
@@ -50,7 +50,7 @@ export function BackButton({ onClick, label = 'Back' }) {
     <button
       type="button"
       onClick={onClick}
-      className="inline-flex items-center gap-1 text-xs font-medium text-navy/70 hover:text-navy transition-colors"
+      className="inline-flex items-center gap-1 text-xs font-medium text-navy/55 hover:text-navy transition-colors duration-150"
     >
       <ChevronLeft size={14} aria-hidden="true" />
       {label}

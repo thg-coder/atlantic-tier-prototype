@@ -6,6 +6,7 @@ import Banner from './components/Banner.jsx'
 import Footer from './components/Footer.jsx'
 import ProgressBar from './components/ProgressBar.jsx'
 import { BackButton } from './components/Buttons.jsx'
+import DemoPageChrome from './components/DemoPageChrome.jsx'
 
 import Land from './screens/Land.jsx'
 import Trust from './screens/Trust.jsx'
@@ -24,6 +25,12 @@ const SCREENS = {
   [STEP.CONFIRM]: Confirm,
   [STEP.CONFIRMATION]: Confirmation,
 }
+
+// ?embed=1 → render the bare widget (for iframe embeds on real client sites);
+// otherwise wrap it in the standalone-demo page chrome.
+const IS_EMBED =
+  typeof window !== 'undefined' &&
+  new URLSearchParams(window.location.search).has('embed')
 
 export default function App() {
   const { state, dispatch, goBack, stepIndex } = useBooking()
@@ -47,24 +54,34 @@ export default function App() {
   const Current = SCREENS[state.currentStep] || Land
   const showBack = stepIndex > 0 && state.currentStep !== STEP.CONFIRMATION
 
-  return (
-    <div className="min-h-screen w-full flex justify-center items-start p-0 sm:p-4 bg-transparent">
-      <div className="w-full max-w-widget bg-white rounded-none sm:rounded-2xl shadow-widget flex flex-col overflow-hidden min-h-screen sm:min-h-0">
-        <Banner />
-        <ProgressBar />
-        <main
-          id="widget-scroll"
-          className="flex-1 overflow-y-auto px-5 pt-2 pb-4 flex flex-col"
-        >
-          {showBack && (
-            <div className="mb-3">
-              <BackButton onClick={goBack} />
-            </div>
-          )}
-          <Current />
-        </main>
-        <Footer />
-      </div>
+  const widgetCard = (
+    <div
+      className={
+        'w-full max-w-widget bg-white shadow-widget flex flex-col overflow-hidden ' +
+        (IS_EMBED ? 'rounded-none sm:rounded-2xl min-h-screen sm:min-h-0' : 'rounded-2xl')
+      }
+    >
+      <Banner />
+      <ProgressBar />
+      <main id="widget-scroll" className="flex-1 overflow-y-auto px-6 pt-3 pb-6 flex flex-col">
+        {showBack && (
+          <div className="mb-4">
+            <BackButton onClick={goBack} />
+          </div>
+        )}
+        <Current />
+      </main>
+      <Footer />
     </div>
   )
+
+  if (IS_EMBED) {
+    return (
+      <div className="min-h-screen w-full flex justify-center items-start p-0 sm:p-4 bg-transparent">
+        {widgetCard}
+      </div>
+    )
+  }
+
+  return <DemoPageChrome>{widgetCard}</DemoPageChrome>
 }

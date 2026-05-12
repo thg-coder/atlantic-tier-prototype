@@ -13,21 +13,22 @@ export default function ChoiceCard({
       type="button"
       disabled={disabled}
       onClick={onClick}
+      aria-pressed={selected || undefined}
       className={
-        'w-full text-left rounded-xl border p-4 transition-all ' +
+        'w-full text-left rounded-xl border p-5 transition-all duration-150 ease-out ' +
         (disabled
-          ? 'bg-sand-100/60 border-sand-200 cursor-not-allowed opacity-60 '
+          ? 'bg-sand-100/70 border-navy/8 cursor-not-allowed '
           : selected
-            ? 'bg-navy text-white border-navy shadow-md '
-            : 'bg-white border-sand-200 hover:border-navy/40 active:scale-[0.99] ')
+            ? 'bg-navy text-white border-navy shadow-card-active '
+            : 'bg-white border-navy/10 shadow-card hover:border-navy/20 hover:shadow-card-hover active:scale-[0.99] active:shadow-card-active ')
       }
     >
-      <div className="flex items-start gap-3">
+      <div className="flex items-start gap-3.5">
         {icon && (
           <div
             className={
               'mt-0.5 flex-shrink-0 ' +
-              (selected ? 'text-sand-300' : disabled ? 'text-navy/30' : 'text-navy/70')
+              (selected ? 'text-white/85' : disabled ? 'text-navy/25' : 'text-navy/65')
             }
           >
             {icon}
@@ -37,15 +38,15 @@ export default function ChoiceCard({
           <div
             className={
               'text-sm font-semibold inline-flex items-center gap-2 ' +
-              (selected ? 'text-white' : disabled ? 'text-navy/50' : 'text-navy')
+              (selected ? 'text-white' : disabled ? 'text-navy/45' : 'text-navy')
             }
           >
             {title}
             {badge && (
               <span
                 className={
-                  'px-1.5 py-0.5 rounded-full text-[9px] font-semibold uppercase tracking-wider ' +
-                  (selected ? 'bg-white/20 text-white' : 'bg-navy/10 text-navy/70')
+                  'px-1.5 py-0.5 rounded-full text-[9px] font-semibold uppercase tracking-[0.08em] ' +
+                  (selected ? 'bg-white/20 text-white' : 'bg-navy/8 text-navy/65')
                 }
               >
                 {badge}
@@ -56,14 +57,14 @@ export default function ChoiceCard({
             <div
               className={
                 'mt-1 text-xs leading-relaxed ' +
-                (selected ? 'text-white/80' : disabled ? 'text-navy/40' : 'text-navy/60')
+                (selected ? 'text-white/75' : disabled ? 'text-navy/35' : 'text-navy/55')
               }
             >
               {description}
             </div>
           )}
           {disabled && disabledNote && (
-            <div className="mt-2 text-[11px] font-medium text-navy/50 italic">
+            <div className="mt-2 text-[11px] font-medium text-navy/45 italic">
               {disabledNote}
             </div>
           )}

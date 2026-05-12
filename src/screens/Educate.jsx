@@ -14,15 +14,15 @@ export default function Educate() {
   const priceLabel = priceRanges?.[state.intake.procedureInterest] ?? 'Available on request'
 
   return (
-    <div className="screen-enter flex flex-col gap-5">
+    <div className="screen-enter flex flex-col gap-6">
       <div>
-        <h2 className="font-display font-medium text-[26px] text-navy mb-1 leading-tight">
+        <h2 className="font-display font-semibold text-[28px] leading-[1.12] text-navy">
           About this procedure
         </h2>
-        <p className="text-xs text-navy/60">[Procedure name — placeholder.]</p>
+        <p className="mt-1 text-[12px] text-navy/50">[Procedure name — placeholder.]</p>
       </div>
 
-      <div className="space-y-3 text-sm text-navy/70 leading-relaxed">
+      <div className="prose-editorial space-y-4 text-[14.5px] text-navy/70">
         <p>
           Every aesthetic procedure is a balance — between what a technique can deliver and what
           your anatomy, expectations, and life circumstances allow. The right starting point
@@ -42,26 +42,32 @@ export default function Educate() {
         </p>
       </div>
 
-      <div className="rounded-lg bg-cream border border-sand-200 p-4">
-        <div className="text-[11px] font-semibold uppercase tracking-wider text-navy/60 mb-2">
+      <hr className="hairline" />
+
+      <div>
+        <div className="text-[10px] font-semibold uppercase tracking-[0.16em] text-navy/45 mb-3">
           What to expect
         </div>
-        <ul className="text-xs text-navy/80 leading-relaxed list-disc pl-4 space-y-1">
+        <ul className="space-y-2.5">
           {WHAT_TO_EXPECT.map((item) => (
-            <li key={item}>{item}</li>
+            <li key={item} className="flex gap-3 text-[13.5px] text-navy/70 leading-relaxed">
+              <span aria-hidden="true" className="mt-2 h-1 w-1 flex-shrink-0 rounded-full bg-navy/35" />
+              <span>{item}</span>
+            </li>
           ))}
         </ul>
       </div>
 
-      {pricingVisibility === 'show' && (
-        <div className="text-sm text-navy/80">
-          <span className="font-semibold">Investment:</span> {priceLabel}
-        </div>
-      )}
-      {pricingVisibility === 'starting_at' && (
-        <div className="text-sm text-navy/80">
-          <span className="font-semibold">Starting at:</span> {priceLabel}
-        </div>
+      {(pricingVisibility === 'show' || pricingVisibility === 'starting_at') && (
+        <>
+          <hr className="hairline" />
+          <div className="text-[14px] text-navy/75">
+            <span className="font-semibold text-navy">
+              {pricingVisibility === 'starting_at' ? 'Starting at:' : 'Investment:'}
+            </span>{' '}
+            {priceLabel}
+          </div>
+        </>
       )}
 
       <PrimaryButton onClick={goNext}>Continue to consultation request</PrimaryButton>

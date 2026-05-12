@@ -12,19 +12,24 @@ body,
 
 body {
   font-family: 'Inter', ui-sans-serif, system-ui, -apple-system, sans-serif;
-  color: #1f2937;
-  line-height: 1.55;
+  color: #212834;
+  line-height: 1.6;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   font-feature-settings: 'cv11', 'ss01', 'ss03';
 }
 
+/* Display serif (Cormorant Garamond) — editorial, high-contrast. Tighter
+   tracking, comfortable but not cramped leading. */
+.font-display {
+  line-height: 1.16;
+  letter-spacing: -0.003em;
+}
 h1,
 h2,
 h3,
-h4,
-.font-display {
-  line-height: 1.18;
+h4 {
+  line-height: 1.22;
   letter-spacing: -0.005em;
 }
 
@@ -33,9 +38,20 @@ h4,
   font-feature-settings: 'tnum' 1;
 }
 
+/* Long-form reading column (Educate overview, etc.) */
+.prose-editorial p {
+  line-height: 1.7;
+}
+
+/* Hairline rule in muted navy — for editorial section dividers */
+.hairline {
+  border: 0;
+  border-top: 1px solid rgba(20, 33, 51, 0.12);
+}
+
 /* Make focus rings consistent and accessible */
 :focus-visible {
-  outline: 2px solid #0B1E3F;
+  outline: 2px solid #142133;
   outline-offset: 2px;
 }
 
@@ -75,5 +91,11 @@ input[type='number'] {
   to {
     opacity: 1;
     transform: translateY(0);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .screen-enter {
+    animation: none;
   }
 }

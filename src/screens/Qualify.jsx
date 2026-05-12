@@ -53,8 +53,10 @@ function RadioGroup({ name, options, value, onChange, invalid }) {
           <label
             key={opt}
             className={
-              'flex items-center gap-3 cursor-pointer rounded-md border px-3 py-2.5 text-sm transition-colors ' +
-              (selected ? 'border-navy bg-navy/5 text-navy' : 'border-sand-200 text-navy hover:border-navy/40')
+              'group flex items-center gap-3 cursor-pointer rounded-lg border px-3.5 py-3 text-[13.5px] transition-all duration-150 ' +
+              (selected
+                ? 'border-navy bg-navy/[0.04] text-navy shadow-card '
+                : 'border-navy/12 text-navy/80 hover:border-navy/25 hover:bg-navy/[0.02] ')
             }
           >
             <input
@@ -63,8 +65,17 @@ function RadioGroup({ name, options, value, onChange, invalid }) {
               value={opt}
               checked={selected}
               onChange={() => onChange(opt)}
-              className="h-4 w-4 text-navy border-sand-300 focus:ring-navy"
+              className="sr-only"
             />
+            <span
+              aria-hidden="true"
+              className={
+                'flex h-4 w-4 flex-shrink-0 items-center justify-center rounded-full border transition-colors duration-150 ' +
+                (selected ? 'border-navy' : 'border-navy/30 group-hover:border-navy/45')
+              }
+            >
+              <span className={'h-2 w-2 rounded-full bg-navy transition-transform duration-150 ' + (selected ? 'scale-100' : 'scale-0')} />
+            </span>
             <span>{opt}</span>
           </label>
         )
@@ -163,12 +174,12 @@ export default function Qualify() {
   }
 
   return (
-    <form className="screen-enter flex flex-col gap-5" onSubmit={handleSubmit} noValidate>
+    <form className="screen-enter flex flex-col gap-6" onSubmit={handleSubmit} noValidate>
       <div>
-        <h2 className="font-display font-medium text-[26px] text-navy mb-1 leading-tight">
+        <h2 className="font-display font-semibold text-[28px] leading-[1.12] text-navy">
           About your consultation
         </h2>
-        <p className="text-xs text-navy/60">
+        <p className="mt-1.5 text-[13px] text-navy/60 leading-relaxed">
           A few questions before we schedule. This information helps us prepare for our time
           together.
         </p>
@@ -294,8 +305,8 @@ export default function Qualify() {
         </select>
       </FormField>
 
-      <div className="border-t border-sand-200 pt-4">
-        <div className="text-[11px] font-semibold uppercase tracking-wider text-navy/50 mb-3">
+      <div className="border-t border-navy/10 pt-5">
+        <div className="text-[10px] font-semibold uppercase tracking-[0.16em] text-navy/45 mb-3.5">
           Contact information
         </div>
 

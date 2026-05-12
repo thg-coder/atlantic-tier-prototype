@@ -15,9 +15,9 @@ import { FormField, inputClass, inputErrorClass } from '../components/FormField.
 
 function Callout({ title, children }) {
   return (
-    <div className="rounded-lg bg-cream border border-sand-200 px-4 py-3">
-      <div className="text-[11px] font-semibold uppercase tracking-wider text-navy/60">{title}</div>
-      <div className="mt-1 text-xs text-navy/80 leading-relaxed">{children}</div>
+    <div className="rounded-lg bg-cream border border-navy/10 border-l-2 border-l-navy/40 px-4 py-3">
+      <div className="text-[10px] font-semibold uppercase tracking-[0.16em] text-navy/55">{title}</div>
+      <div className="mt-1.5 text-[12px] text-navy/70 leading-relaxed">{children}</div>
     </div>
   )
 }
@@ -90,11 +90,11 @@ export default function Confirm() {
   return (
     <div className="screen-enter flex flex-col gap-4">
       <div>
-        <h2 className="font-display font-medium text-[26px] text-navy mb-1 leading-tight">
+        <h2 className="font-display font-semibold text-[28px] leading-[1.12] text-navy">
           Confirm your consultation
         </h2>
         {!isFree && (
-          <p className="text-[11px] text-navy/60 inline-flex items-center gap-1">
+          <p className="mt-1.5 text-[11px] text-navy/50 inline-flex items-center gap-1.5">
             <Lock size={11} aria-hidden="true" />
             Secured &amp; encrypted (demo only)
           </p>
@@ -116,24 +116,35 @@ export default function Confirm() {
         <p>{siteConfig.noShowPolicyText}</p>
       </Callout>
 
-      <label className="flex items-start gap-2 cursor-pointer">
+      <label className="group flex items-start gap-3 cursor-pointer rounded-lg border border-navy/10 bg-white px-4 py-3 transition-colors duration-150 hover:border-navy/20">
         <input
           type="checkbox"
           checked={policyAgreed}
           onChange={(e) => dispatch({ type: 'SET_POLICY_AGREED', value: e.target.checked })}
-          className="mt-0.5 h-4 w-4 rounded border-sand-300 text-navy focus:ring-navy"
+          className="sr-only"
         />
-        <span className="text-xs text-navy/80 leading-relaxed">
+        <span
+          aria-hidden="true"
+          className={
+            'mt-px flex h-[18px] w-[18px] flex-shrink-0 items-center justify-center rounded-[5px] border transition-colors duration-150 ' +
+            (policyAgreed ? 'bg-navy border-navy' : 'border-navy/30 group-hover:border-navy/45')
+          }
+        >
+          <svg viewBox="0 0 12 12" className={'h-2.5 w-2.5 text-white transition-opacity duration-150 ' + (policyAgreed ? 'opacity-100' : 'opacity-0')} fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round">
+            <path d="M2 6.5 4.8 9 10 3" />
+          </svg>
+        </span>
+        <span className="text-[12.5px] text-navy/75 leading-relaxed">
           I have read and agree to the cancellation and no-show policy.{' '}
-          <span className="text-red-600">*</span>
+          <span className="text-rose-700">*</span>
         </span>
       </label>
 
       {!isFree && (
-        <div className="rounded-lg border border-sand-200 bg-white p-4 space-y-3">
+        <div className="rounded-xl border border-navy/10 bg-white shadow-card p-5 space-y-3.5">
           <div className="flex items-center justify-between">
-            <span className="text-xs font-semibold text-navy">Card details</span>
-            <CreditCard size={14} className="text-navy/40" aria-hidden="true" />
+            <span className="text-[10px] font-semibold uppercase tracking-[0.16em] text-navy/45">Card details</span>
+            <CreditCard size={14} className="text-navy/35" aria-hidden="true" />
           </div>
 
           <FormField
@@ -207,8 +218,8 @@ export default function Confirm() {
           disabled={!canSubmit || submitting}
           onClick={submit}
           className={
-            'w-full py-3 rounded-lg text-sm font-semibold tracking-wide text-white transition-all ' +
-            'bg-navy hover:bg-navy-600 active:scale-[0.99] disabled:bg-navy/30 disabled:cursor-not-allowed ' +
+            'w-full py-3.5 rounded-xl text-sm font-semibold tracking-[0.01em] text-white shadow-cta transition-all duration-150 ease-out ' +
+            'bg-navy hover:bg-navy-600 active:scale-[0.985] active:shadow-card-active disabled:bg-navy/25 disabled:text-white/70 disabled:shadow-none disabled:cursor-not-allowed ' +
             (submitting ? ' opacity-80' : '')
           }
           aria-busy={submitting}
