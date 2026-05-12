@@ -29,9 +29,9 @@ export const PATH_STEPS = [
 
 export const STEP_LABELS = {
   LAND: 'Welcome',
-  TRUST: 'Our work',
+  TRUST: 'Selected work',
   EDUCATE: 'About the procedure',
-  QUALIFY: 'Tell us about you',
+  QUALIFY: 'About your consultation',
   SCHEDULE: 'Schedule',
   CONFIRM: 'Confirm',
   CONFIRMATION: '', // terminal — no label needed

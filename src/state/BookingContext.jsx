@@ -3,11 +3,14 @@ import { reducer, initialState } from './reducer.js'
 import { PATH_STEPS, getStepIndex, isValidStep, STEP } from './pathUtils.js'
 import { generateAvailability } from '../mockData.js'
 import { safeGet, safeSet, safeRemove } from '../utils/storage.js'
+import { siteConfig } from '../siteConfig.js'
 
-// v2: bumped for the Phase B structural reshape (9→6 stages). Any state persisted
-// under v1 referenced now-deleted step enum values; bumping the key invalidates it.
-const STORAGE_KEY = 'atlantic_booking_state_v2'
-const SEED_KEY = 'atlantic_seed_v2'
+// Storage keys are namespaced by brandName so multiple deployments on the same
+// origin don't collide. v3: bumped for the Phase D config injection — any v2
+// state from Phase B/C testing is invalidated.
+const KEY_NS = siteConfig.brandName.toLowerCase()
+const STORAGE_KEY = `${KEY_NS}_booking_state_v3`
+const SEED_KEY = `${KEY_NS}_seed_v3`
 
 const BookingContext = createContext(null)
 

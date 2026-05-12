@@ -15,6 +15,10 @@ export default function Confirmation() {
   const virtual = state.consultFormat === 'virtual'
   const formatLabel = virtual ? 'Virtual consultation' : 'In-person consultation'
 
+  const feeModel = siteConfig.consultFeeModel || 'paid_nonrefundable'
+  const feeAmount = siteConfig.consultFeeAmount ?? CONSULTATION_FEE
+  const isFree = feeModel === 'free'
+
   const dateObj = state.selectedDateKey ? new Date(state.selectedDateKey + 'T12:00:00') : null
   const slotLabel = state.selectedSlotTime ? formatTime12h(state.selectedSlotTime) : ''
 
@@ -31,9 +35,12 @@ export default function Confirmation() {
     start.setHours(hh, mm, 0, 0)
     const end = new Date(start)
     end.setMinutes(end.getMinutes() + CONSULT_BLOCK_MINUTES)
-    const summary = `${procName} consultation with ${siteConfig.practitionerName}`
+    const summary = `Consultation — ${siteConfig.practiceName}`
+    const icsLocation = virtual
+      ? `${siteConfig.brandName} — Virtual consultation`
+      : siteConfig.practiceAddress
     const description =
-      `Consultation (${virtual ? 'Virtual' : 'In-Person'})` +
+      `${procName} consultation (${virtual ? 'Virtual' : 'In-Person'})` +
       `\nProvider: ${siteConfig.practitionerName}` +
       `\nContact: ${siteConfig.practicePhone}`
     const uid = `booking-${state.intake.procedureInterest || 'consult'}-${state.selectedDateKey}-${state.selectedSlotTime}@rivr.local`
@@ -41,7 +48,7 @@ export default function Confirmation() {
       uid,
       summary,
       description,
-      location: locationLine,
+      location: icsLocation,
       startLocal: start,
       endLocal: end,
     })
@@ -87,8 +94,9 @@ export default function Confirmation() {
             Payment
           </div>
           <div className="text-[11px] text-navy/70 mt-1">
-            {formatPriceUSD(CONSULTATION_FEE)} paid today · card ending in{' '}
-            {state.payment.last4 || '••••'}
+            {isFree
+              ? 'No charge — complimentary consultation.'
+              : `${formatPriceUSD(feeAmount)} paid today · card ending in ${state.payment.last4 || '••••'}`}
           </div>
         </div>
 
@@ -147,8 +155,9 @@ export default function Confirmation() {
               Provider: {siteConfig.practitionerName}
             </p>
             <p>
-              Receipt: {formatPriceUSD(CONSULTATION_FEE)} charged to card ending in{' '}
-              {state.payment.last4 || '••••'}.
+              {isFree
+                ? 'This consultation is complimentary — there is no charge.'
+                : `Receipt: ${formatPriceUSD(feeAmount)} charged to card ending in ${state.payment.last4 || '••••'}.`}
             </p>
             <p>
               <strong>Before your consultation, please have ready:</strong>
@@ -208,8 +217,10 @@ export default function Confirmation() {
               <strong>Provider:</strong> {siteConfig.practitionerName}
             </p>
             <p>
-              <strong>Payment status:</strong> {formatPriceUSD(CONSULTATION_FEE)} collected on
-              card ending {state.payment.last4 || '••••'}.
+              <strong>Payment status:</strong>{' '}
+              {isFree
+                ? 'Complimentary consultation — no charge collected.'
+                : `${formatPriceUSD(feeAmount)} collected on card ending ${state.payment.last4 || '••••'}.`}
             </p>
           </EmailPreview>
         </div>

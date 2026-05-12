@@ -2,18 +2,17 @@
 // Practice identity (name, address, phone, branding, etc.) lives in
 // src/siteConfig.js, not here.
 
-// Consultation fee charged at booking. (Phase D makes this configurable via
-// siteConfig — for now it's a single Atlantic-tier flat fee.)
+// Consultation fee fallback. The Confirm/Order/Confirmation screens read
+// siteConfig.consultFeeAmount first and fall back to this if it's undefined.
 export const CONSULTATION_FEE = 150
 
-// Each service: id, category, name, description, durationMin, priceUSD,
-// consultModeOverride ('in_person' forces in-person consultation; null = both
-// allowed). Phase D will layer a global siteConfig.virtualConsultMode beneath
-// this.
+// Each service: id, name, description, durationMin, priceUSD,
+// consultModeOverride ('in_person' forces in-person consultation; null = either,
+// subject to siteConfig.virtualConsultMode). priceUSD is unused while
+// siteConfig.pricingVisibility === 'hide'.
 export const SERVICES = [
   {
     id: 'botox',
-    category: 'injectables',
     name: 'Botox',
     description: 'Smooths fine lines on the forehead, brow, and around the eyes.',
     durationMin: 30,
@@ -22,7 +21,6 @@ export const SERVICES = [
   },
   {
     id: 'filler',
-    category: 'injectables',
     name: 'Dermal Filler',
     description: 'Restores volume and contour to lips, cheeks, and under-eye areas.',
     durationMin: 45,
@@ -31,7 +29,6 @@ export const SERVICES = [
   },
   {
     id: 'microneedling',
-    category: 'skin',
     name: 'Microneedling',
     description: 'Stimulates collagen for firmer, brighter skin and refined texture.',
     durationMin: 60,
@@ -40,7 +37,6 @@ export const SERVICES = [
   },
   {
     id: 'hydrafacial',
-    category: 'skin',
     name: 'HydraFacial',
     description: 'Cleanses, exfoliates, and hydrates for an instant healthy glow.',
     durationMin: 60,
@@ -49,7 +45,6 @@ export const SERVICES = [
   },
   {
     id: 'chemical-peel',
-    category: 'skin',
     name: 'Chemical Peel',
     description: 'Resurfaces skin to improve tone, clarity, and texture.',
     durationMin: 45,
@@ -58,7 +53,6 @@ export const SERVICES = [
   },
   {
     id: 'laser-hair',
-    category: 'hair-body',
     name: 'Laser Hair Removal Session',
     description: 'Targeted reduction of unwanted hair with long-lasting results.',
     durationMin: 30,
@@ -67,7 +61,6 @@ export const SERVICES = [
   },
   {
     id: 'prp',
-    category: 'hair-body',
     name: 'PRP / Hair Restoration',
     description: 'Platelet-rich plasma therapy to support natural hair regrowth.',
     durationMin: 60,
@@ -76,7 +69,6 @@ export const SERVICES = [
   },
   {
     id: 'iv-therapy',
-    category: 'wellness',
     name: 'IV Therapy Drip',
     description: 'Custom hydration and vitamin infusion for energy and recovery.',
     durationMin: 45,

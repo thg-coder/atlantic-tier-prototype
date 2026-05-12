@@ -5,6 +5,7 @@ export default function ChoiceCard({
   disabled,
   disabledNote,
   icon,
+  badge,
   onClick
 }) {
   return (
@@ -35,11 +36,21 @@ export default function ChoiceCard({
         <div className="flex-1">
           <div
             className={
-              'text-sm font-semibold ' +
+              'text-sm font-semibold inline-flex items-center gap-2 ' +
               (selected ? 'text-white' : disabled ? 'text-navy/50' : 'text-navy')
             }
           >
             {title}
+            {badge && (
+              <span
+                className={
+                  'px-1.5 py-0.5 rounded-full text-[9px] font-semibold uppercase tracking-wider ' +
+                  (selected ? 'bg-white/20 text-white' : 'bg-navy/10 text-navy/70')
+                }
+              >
+                {badge}
+              </span>
+            )}
           </div>
           {description && (
             <div
