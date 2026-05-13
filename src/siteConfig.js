@@ -21,7 +21,9 @@ export const siteConfig = {
   spaInboxAddress: 'front-desk@medspa.example',
 
   // Landing screen
-  heroImageUrl: null,                     // null = render gray placeholder block
+  // Hero portrait on LAND. Replaces the gray placeholder when populated.
+  // Recommended: 4:3 portrait, 600–1200px wide. null = gray placeholder block.
+  heroImageUrl: null,
   signatureProcedures: [                  // shown as pills under hero
     'Facial Rejuvenation',
     'Body Contouring',
@@ -29,6 +31,27 @@ export const siteConfig = {
   ],
   landingBio:                             // body paragraph below pills (replaces Phase C bracketed placeholder)
     '[Short landing paragraph — who the practitioner is and why patients choose this practice. Real copy comes from the client during onboarding.]',
+
+  // Environmental banner on DemoPageChrome — renders horizontally between the
+  // top nav and the "Begin a Conversation" heading. Recommended: wide 21:9-ish,
+  // 1600–2400px. null = no banner section rendered (current state).
+  bannerImageUrl: null,
+
+  // Procedure card images on PICK. Maps a procedure id (PROCEDURE_DETAILS key,
+  // plus the special 'comprehensive' key) to an image URL. Recommended: 4:3 or
+  // square, 400–600px. Any procedure NOT listed here renders as a text-only
+  // card (no empty image slot, no placeholder).
+  procedureCardImages: {
+    // botox: 'https://example.com/path.jpg',
+    // filler: 'https://example.com/path.jpg',
+    // microneedling: 'https://example.com/path.jpg',
+    // hydrafacial: 'https://example.com/path.jpg',
+    // 'chemical-peel': 'https://example.com/path.jpg',
+    // 'laser-hair': 'https://example.com/path.jpg',
+    // prp: 'https://example.com/path.jpg',
+    // 'iv-therapy': 'https://example.com/path.jpg',
+    // comprehensive: 'https://example.com/path.jpg',
+  },
 
   // Credentials (first one shown inline on LAND; full list available for future use)
   credentials: [

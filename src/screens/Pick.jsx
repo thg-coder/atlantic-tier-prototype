@@ -38,6 +38,7 @@ export default function Pick() {
             key={id}
             title={details.label}
             description={details.descriptionShort}
+            imageUrl={siteConfig.procedureCardImages?.[id]}
             selected={selected === id}
             onClick={() => pick(id)}
           />
@@ -50,6 +51,7 @@ export default function Pick() {
           <ChoiceCard
             title="Comprehensive consultation"
             description="Multiple concerns or unsure where to begin — we’ll discuss your options in depth."
+            imageUrl={siteConfig.procedureCardImages?.[COMPREHENSIVE_ID]}
             selected={selected === COMPREHENSIVE_ID}
             onClick={() => pick(COMPREHENSIVE_ID)}
           />

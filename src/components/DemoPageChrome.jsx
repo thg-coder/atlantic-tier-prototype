@@ -58,6 +58,17 @@ export default function DemoPageChrome({ children }) {
         </PageWidth>
       </header>
 
+      {/* Environmental banner (only when siteConfig.bannerImageUrl is set) */}
+      {siteConfig.bannerImageUrl && (
+        <PageWidth className="!max-w-[1120px] pt-4 sm:pt-6">
+          <img
+            src={siteConfig.bannerImageUrl}
+            alt="Practice interior"
+            className="w-full h-48 sm:h-72 object-cover rounded-xl shadow-card"
+          />
+        </PageWidth>
+      )}
+
       {/* Intro */}
       <PageWidth className="pt-12 sm:pt-16 pb-8 sm:pb-10 text-center">
         <h1 className="font-display font-semibold text-[34px] sm:text-[42px] leading-[1.08] text-navy">

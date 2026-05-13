@@ -27,8 +27,8 @@ export default function Land() {
       {siteConfig.heroImageUrl ? (
         <img
           src={siteConfig.heroImageUrl}
-          alt=""
-          className="w-full aspect-[4/3] object-cover rounded-xl shadow-card"
+          alt={`${siteConfig.practitionerName} — portrait`}
+          className="w-full aspect-[4/3] object-cover rounded-xl border border-navy/8 shadow-card"
         />
       ) : (
         <div className="w-full aspect-[4/3] rounded-xl bg-navy/[0.06]" aria-hidden="true" />
