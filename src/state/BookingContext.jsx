@@ -6,11 +6,12 @@ import { safeGet, safeSet, safeRemove } from '../utils/storage.js'
 import { siteConfig } from '../siteConfig.js'
 
 // Storage keys are namespaced by brandName so multiple deployments on the same
-// origin don't collide. v4: bumped for the Phase B.5 flow restructure (TRUST/
-// EDUCATE → PICK/LEARN); any v3 state with stale step values is invalidated.
+// origin don't collide. v4: Phase B.5 flow restructure (TRUST/EDUCATE →
+// PICK/LEARN). v5: Phase B.7 procedure-data swap (med-spa IDs → plastic-surgery
+// IDs) — any v4 state holding a stale procedureInterest id is invalidated.
 const KEY_NS = siteConfig.brandName.toLowerCase()
-const STORAGE_KEY = `${KEY_NS}_booking_state_v4`
-const SEED_KEY = `${KEY_NS}_seed_v4`
+const STORAGE_KEY = `${KEY_NS}_booking_state_v5`
+const SEED_KEY = `${KEY_NS}_seed_v5`
 
 const BookingContext = createContext(null)
 
@@ -37,6 +38,14 @@ function loadInitial() {
   // a previous build, or a hand-edited sessionStorage value) must not leave the
   // app in an unrenderable state. Reject anything that isn't a known step.
   if (!isValidStep(merged.currentStep)) {
+    merged.currentStep = STEP.LAND
+  }
+  // Same idea for a stale procedure id (e.g. an id from a previous procedure set
+  // left in saved state). If it doesn't map to a current procedureDetails entry,
+  // drop it and send the user back to LAND so they re-pick.
+  const procId = merged.intake?.procedureInterest
+  if (procId && !siteConfig.procedureDetails?.[procId]) {
+    merged.intake = { ...merged.intake, procedureInterest: null }
     merged.currentStep = STEP.LAND
   }
   return merged

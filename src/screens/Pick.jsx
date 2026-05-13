@@ -9,12 +9,15 @@ export default function Pick() {
   const { state, dispatch, goNext } = useBooking()
   const selected = state.intake.procedureInterest
 
-  // Procedure cards in config order, minus the comprehensive fallback (rendered
-  // separately below the divider).
-  const procedures = Object.entries(siteConfig.procedureDetails || {}).filter(
-    ([id]) => id !== COMPREHENSIVE_ID
-  )
-  const comprehensive = siteConfig.procedureDetails?.[COMPREHENSIVE_ID]
+  // Procedure cards in the explicit siteConfig.procedureOrder, skipping any id
+  // that lacks a procedureDetails entry. The 'comprehensive' fallback is never
+  // in procedureOrder — it's rendered separately below the divider.
+  const detailsMap = siteConfig.procedureDetails || {}
+  const order = siteConfig.procedureOrder || Object.keys(detailsMap).filter((id) => id !== COMPREHENSIVE_ID)
+  const procedures = order
+    .filter((id) => id !== COMPREHENSIVE_ID && detailsMap[id])
+    .map((id) => [id, detailsMap[id]])
+  const comprehensive = detailsMap[COMPREHENSIVE_ID]
 
   function pick(id) {
     if (selected === id) return

@@ -10,71 +10,68 @@ export const CONSULTATION_FEE = 150
 // Each service: id, name, description, durationMin, priceUSD,
 // consultModeOverride ('in_person' forces in-person consultation; null = either,
 // subject to siteConfig.virtualConsultMode). priceUSD is unused while
-// siteConfig.pricingVisibility === 'hide'.
+// siteConfig.pricingVisibility === 'hide' (kept as a rough placeholder).
+//
+// Atlantic positioning: consult-led plastic surgery + premium dermatology.
+// Surgical procedures require a physical exam, so consultModeOverride is
+// 'in_person'; the injectable consultation is a planning conversation that can
+// happen virtually first, so its override is null (governed by virtualConsultMode).
 export const SERVICES = [
   {
-    id: 'botox',
-    name: 'Botox',
-    description: 'Smooths fine lines on the forehead, brow, and around the eyes.',
-    durationMin: 30,
-    priceUSD: 480,
-    consultModeOverride: null
-  },
-  {
-    id: 'filler',
-    name: 'Dermal Filler',
-    description: 'Restores volume and contour to lips, cheeks, and under-eye areas.',
-    durationMin: 45,
-    priceUSD: 700,
-    consultModeOverride: null
-  },
-  {
-    id: 'microneedling',
-    name: 'Microneedling',
-    description: 'Stimulates collagen for firmer, brighter skin and refined texture.',
+    id: 'rhinoplasty',
+    name: 'Rhinoplasty',
+    description: 'Structural reshaping of the nose, balancing aesthetic refinement with preserved breathing function.',
     durationMin: 60,
-    priceUSD: 400,
-    consultModeOverride: null
-  },
-  {
-    id: 'hydrafacial',
-    name: 'HydraFacial',
-    description: 'Cleanses, exfoliates, and hydrates for an instant healthy glow.',
-    durationMin: 60,
-    priceUSD: 200,
-    consultModeOverride: null
-  },
-  {
-    id: 'chemical-peel',
-    name: 'Chemical Peel',
-    description: 'Resurfaces skin to improve tone, clarity, and texture.',
-    durationMin: 45,
-    priceUSD: 250,
-    consultModeOverride: null
-  },
-  {
-    id: 'laser-hair',
-    name: 'Laser Hair Removal Session',
-    description: 'Targeted reduction of unwanted hair with long-lasting results.',
-    durationMin: 30,
-    priceUSD: 200,
+    priceUSD: 12000,
     consultModeOverride: 'in_person'
   },
   {
-    id: 'prp',
-    name: 'PRP / Hair Restoration',
-    description: 'Platelet-rich plasma therapy to support natural hair regrowth.',
+    id: 'facelift',
+    name: 'Facelift',
+    description: 'Surgical lifting and repositioning of facial tissue to address laxity across the midface, jawline, and neck.',
     durationMin: 60,
-    priceUSD: 900,
+    priceUSD: 22000,
     consultModeOverride: 'in_person'
   },
   {
-    id: 'iv-therapy',
-    name: 'IV Therapy Drip',
-    description: 'Custom hydration and vitamin infusion for energy and recovery.',
+    id: 'eyelid-surgery',
+    name: 'Eyelid Surgery',
+    description: 'Blepharoplasty addressing excess skin and puffiness of the upper and/or lower eyelids.',
     durationMin: 45,
-    priceUSD: 175,
+    priceUSD: 6500,
+    consultModeOverride: 'in_person'
+  },
+  {
+    id: 'breast-augmentation',
+    name: 'Breast Augmentation',
+    description: 'Implant- or fat-based augmentation, with implant type and placement matched to anatomy and goals.',
+    durationMin: 60,
+    priceUSD: 9500,
+    consultModeOverride: 'in_person'
+  },
+  {
+    id: 'body-contouring',
+    name: 'Body Contouring',
+    description: 'Surgical body reshaping — liposuction, abdominoplasty, and post-weight-loss procedures.',
+    durationMin: 60,
+    priceUSD: 14000,
+    consultModeOverride: 'in_person'
+  },
+  {
+    id: 'injectable-consultation',
+    name: 'Injectable Consultation',
+    description: 'A planning conversation around neuromodulators and fillers — conservative, anatomy-led dosing.',
+    durationMin: 30,
+    priceUSD: 0,
     consultModeOverride: null
+  },
+  {
+    id: 'skin-restoration',
+    name: 'Skin Restoration & Mohs',
+    description: 'Medical and cosmetic dermatology, including skin-cancer treatment, Mohs surgery, and reconstruction.',
+    durationMin: 45,
+    priceUSD: 0,
+    consultModeOverride: 'in_person'
   }
 ]
 

@@ -25,9 +25,9 @@ export const siteConfig = {
   // Recommended: 4:3 portrait, 600–1200px wide. null = gray placeholder block.
   heroImageUrl: null,
   signatureProcedures: [                  // shown as pills under hero
-    'Facial Rejuvenation',
+    'Facial Surgery',
     'Body Contouring',
-    'Non-Surgical Refinement',
+    'Premium Derm',
   ],
   landingBio:                             // body paragraph below pills (replaces Phase C bracketed placeholder)
     '[Short landing paragraph — who the practitioner is and why patients choose this practice. Real copy comes from the client during onboarding.]',
@@ -42,14 +42,13 @@ export const siteConfig = {
   // square, 400–600px. Any procedure NOT listed here renders as a text-only
   // card (no empty image slot, no placeholder).
   procedureCardImages: {
-    // botox: 'https://example.com/path.jpg',
-    // filler: 'https://example.com/path.jpg',
-    // microneedling: 'https://example.com/path.jpg',
-    // hydrafacial: 'https://example.com/path.jpg',
-    // 'chemical-peel': 'https://example.com/path.jpg',
-    // 'laser-hair': 'https://example.com/path.jpg',
-    // prp: 'https://example.com/path.jpg',
-    // 'iv-therapy': 'https://example.com/path.jpg',
+    // rhinoplasty: 'https://example.com/path.jpg',
+    // facelift: 'https://example.com/path.jpg',
+    // 'eyelid-surgery': 'https://example.com/path.jpg',
+    // 'breast-augmentation': 'https://example.com/path.jpg',
+    // 'body-contouring': 'https://example.com/path.jpg',
+    // 'injectable-consultation': 'https://example.com/path.jpg',
+    // 'skin-restoration': 'https://example.com/path.jpg',
     // comprehensive: 'https://example.com/path.jpg',
   },
 
@@ -79,6 +78,17 @@ export const siteConfig = {
   // Pricing posture
   pricingVisibility: 'hide',              // 'hide' | 'show' | 'starting_at'
   priceRanges: {},                        // { [serviceId]: 'string range' } when pricingVisibility !== 'hide'
+  // Scaffold for onboarding — populate priceRanges (and flip pricingVisibility)
+  // only if the practice wants ranges shown. Keep priceRanges as {} until then.
+  // priceRanges: {
+  //   rhinoplasty: '$8,000–$15,000',
+  //   facelift: '$15,000–$30,000',
+  //   'eyelid-surgery': '$5,000–$9,000',
+  //   'breast-augmentation': '$8,000–$12,000',
+  //   'body-contouring': '$10,000–$20,000',
+  //   'injectable-consultation': 'consultation fee only',
+  //   'skin-restoration': 'varies by case',
+  // },
 
   // Pre-consult prep (shown on Confirmation + emailed to patient)
   preConsultChecklist: [
@@ -93,130 +103,131 @@ export const siteConfig = {
   noShowPolicyText:
     'If you do not arrive within 15 minutes of your scheduled consultation time and have not contacted us, the appointment is treated as a no-show and the consultation fee is forfeited.',
 
+  // Render order for the procedure cards on PICK. Every id here must have a
+  // matching entry in procedureDetails below. 'comprehensive' is rendered
+  // separately below the divider and is intentionally NOT in this list.
+  procedureOrder: [
+    'rhinoplasty',
+    'facelift',
+    'eyelid-surgery',
+    'breast-augmentation',
+    'body-contouring',
+    'injectable-consultation',
+    'skin-restoration',
+  ],
+
   // Per-procedure content (used by the PICK + LEARN screens). Keys match the
   // SERVICES[].id values in mockData.js, plus the 'comprehensive' fallback.
-  // Real per-procedure copy comes from the client during onboarding — the
-  // bracketed strings below demonstrate the structure without making medical
-  // claims. Each entry: { label, descriptionShort, education[3], whatToExpect[3] }.
+  // Atlantic = consult-led plastic surgery + premium dermatology, so the copy
+  // here is surgical/recovery-oriented. Real per-procedure copy comes from the
+  // client during onboarding — the bracketed strings below demonstrate the
+  // structure (and the per-procedure mechanism: pick Rhinoplasty vs Facelift and
+  // LEARN shows different copy) without making medical claims.
+  // Each entry: { label, descriptionShort, education[3], whatToExpect[3] }.
   procedureDetails: {
-    botox: {
-      label: 'Botox',
+    rhinoplasty: {
+      label: 'Rhinoplasty',
       descriptionShort:
-        '[Botox — one-line framing of the practice’s approach, e.g. conservative dosing that keeps natural expression. Real copy at onboarding.]',
+        '[Rhinoplasty — one-line framing of the practice’s approach, e.g. structural rhinoplasty that preserves breathing while refining the aesthetic outcome. Real copy at onboarding.]',
       education: [
-        '[Botox — paragraph 1: what the treatment addresses and the practitioner’s philosophy on it (which lines are typically treated, the stance on starting low and adjusting). Real copy from the client during onboarding.]',
-        '[Botox — paragraph 2: how to decide whether it’s the right step now — candidacy, what it will and won’t do, and how it compares to the alternatives the practice offers.]',
-        '[Botox — paragraph 3: planning and follow-up — how the consultation establishes a baseline and what an ongoing maintenance rhythm typically looks like.]',
+        '[Rhinoplasty — paragraph 1: the practice’s philosophy on nasal surgery — structural versus cosmetic-only technique, preservation of breathing function, and where the surgeon sits on the conservatism-versus-transformation spectrum. Real copy from the client during onboarding.]',
+        '[Rhinoplasty — paragraph 2: candidacy and decision factors — skeletal maturity, anatomy and skin thickness, prior procedures, ethnic considerations, and primary versus revision cases. What the practice will and won’t take on, and how it assesses fit.]',
+        '[Rhinoplasty — paragraph 3: the surgical experience and recovery — open versus closed approach, anesthesia, the splint-and-bruising timeline, the follow-up schedule, and when the result fully settles (often a year or more).]',
       ],
       whatToExpect: [
-        '[Botox — what the consultation itself covers for this area.]',
-        '[Botox — typical timeline from consultation to treatment, if you proceed.]',
-        '[Botox — what aftercare and the follow-up review look like.]',
+        '[Rhinoplasty — the consultation covers a functional and aesthetic airway exam, optional digital imaging of possible outcomes, and a frank discussion of the surgical plan and its limits.]',
+        '[Rhinoplasty — typical timeline from decision to surgery is roughly 6–12 weeks; plan on about two weeks of social downtime and a splint for the first week.]',
+        '[Rhinoplasty — aftercare is a structured follow-up schedule, with results reviewed at roughly 3, 6, and 12 months post-op.]',
       ],
     },
-    filler: {
-      label: 'Dermal Filler',
+    facelift: {
+      label: 'Facelift',
       descriptionShort:
-        '[Dermal filler — one-line framing, e.g. structural balance over volume for its own sake. Real copy at onboarding.]',
+        '[Facelift — one-line framing, e.g. a deep-plane technique that repositions tissue rather than pulling skin, for a result that reads rested rather than done. Real copy at onboarding.]',
       education: [
-        '[Dermal filler — paragraph 1: the areas the practice treats and the principle behind the approach (restoring structure and proportion rather than chasing volume). Real copy from the client during onboarding.]',
-        '[Dermal filler — paragraph 2: candidacy and trade-offs — longevity, reversibility, and how it sits alongside surgical alternatives the practice may recommend instead.]',
-        '[Dermal filler — paragraph 3: how a result is planned in stages, and the practice’s stance on reviewing before adding more.]',
+        '[Facelift — paragraph 1: the practice’s philosophy on lifting the ageing face — which layers are addressed (SMAS / deep plane), why the surgeon favours repositioning over tension, and how the neck and midface are treated as one unit. Real copy from the client during onboarding.]',
+        '[Facelift — paragraph 2: candidacy and timing — skin quality, degree of laxity, bone structure, health and smoking status, and when a less invasive option (or simply waiting) is the more honest recommendation.]',
+        '[Facelift — paragraph 3: the surgical experience and recovery — anesthesia, drains and dressings, the bruising-and-swelling curve, when patients typically return to work and to social settings, and how long the final result takes to emerge.]',
       ],
       whatToExpect: [
-        '[Dermal filler — what the consultation covers for this area.]',
-        '[Dermal filler — typical timeline and how results settle, if you proceed.]',
-        '[Dermal filler — aftercare and the review visit.]',
+        '[Facelift — the consultation covers a layered assessment of face and neck, a discussion of what a lift can and cannot change, and whether adjunct procedures (eyelids, fat transfer, skin resurfacing) belong in the plan.]',
+        '[Facelift — typical timeline from decision to surgery is roughly 8–12 weeks; plan on about two to three weeks before looking presentable in public, and longer before the result is fully refined.]',
+        '[Facelift — aftercare includes close early follow-up and a longer review schedule, with results assessed at roughly 6 weeks, 6 months, and 1 year.]',
       ],
     },
-    microneedling: {
-      label: 'Microneedling',
+    'eyelid-surgery': {
+      label: 'Eyelid Surgery',
       descriptionShort:
-        '[Microneedling — one-line framing, e.g. texture and tone over a course of sessions. Real copy at onboarding.]',
+        '[Eyelid surgery — one-line framing, e.g. conservative blepharoplasty that opens the eye without changing its character. Real copy at onboarding.]',
       education: [
-        '[Microneedling — paragraph 1: what it targets (texture, fine lines, scarring) and the practitioner’s view on realistic gains over a series. Real copy from the client during onboarding.]',
-        '[Microneedling — paragraph 2: candidacy, skin-type considerations, and how it’s sequenced with other treatments in the practice’s plans.]',
-        '[Microneedling — paragraph 3: the maintenance cadence and how progress is assessed between sessions.]',
+        '[Eyelid surgery — paragraph 1: the practice’s approach to upper and lower blepharoplasty — how much skin and fat is appropriate to remove versus reposition, why preserving fullness matters, and the stance on assessing brow position as part of the picture. Real copy from the client during onboarding.]',
+        '[Eyelid surgery — paragraph 2: candidacy and decision factors — distinguishing eyelid skin from a brow descent, dry-eye history, prior LASIK, asymmetry, and when a non-surgical option is the right first step.]',
+        '[Eyelid surgery — paragraph 3: the procedure and recovery — local versus general anesthesia, the suture timeline, the bruising-and-swelling window, restrictions on screens and exercise, and when the scars mature.]',
       ],
       whatToExpect: [
-        '[Microneedling — what the consultation covers.]',
-        '[Microneedling — typical course length and spacing of sessions.]',
-        '[Microneedling — downtime and aftercare.]',
+        '[Eyelid surgery — the consultation covers an eyelid and brow exam, a tear-film and dry-eye screen, and a discussion of whether upper, lower, or both are indicated.]',
+        '[Eyelid surgery — typical timeline from decision to surgery is roughly 4–8 weeks; plan on about 7–10 days of visible bruising and sutures.]',
+        '[Eyelid surgery — aftercare includes a suture-removal visit and follow-ups, with results reviewed at roughly 6 weeks and 6 months.]',
       ],
     },
-    hydrafacial: {
-      label: 'HydraFacial',
+    'breast-augmentation': {
+      label: 'Breast Augmentation',
       descriptionShort:
-        '[HydraFacial — one-line framing, e.g. maintenance-tier care, not a substitute for clinical treatment. Real copy at onboarding.]',
+        '[Breast augmentation — one-line framing, e.g. proportion-led implant selection with an honest conversation about long-term maintenance. Real copy at onboarding.]',
       education: [
-        '[HydraFacial — paragraph 1: what it does and where it fits in the practice’s spectrum of care — and, candidly, where it doesn’t. Real copy from the client during onboarding.]',
-        '[HydraFacial — paragraph 2: who it suits, how often, and how the practice pairs it with longer-term plans.]',
-        '[HydraFacial — paragraph 3: setting expectations on results and longevity.]',
+        '[Breast augmentation — paragraph 1: the practice’s approach to implant type, profile, and placement (over versus under muscle), the role of fat transfer, and why measurements and tissue quality drive the recommendation more than a target size. Real copy from the client during onboarding.]',
+        '[Breast augmentation — paragraph 2: candidacy and trade-offs — the reality that implants are devices that may need future surgery, the discussion of risks (capsular contracture, rippling, BIA-ALCL), whether a lift is also needed, and when the practice would recommend against augmentation.]',
+        '[Breast augmentation — paragraph 3: the surgical experience and recovery — anesthesia, incision options, the early-recovery timeline, lifting and exercise restrictions, when implants "settle," and the long-term monitoring plan.]',
       ],
       whatToExpect: [
-        '[HydraFacial — what the consultation covers.]',
-        '[HydraFacial — what a session involves and how often.]',
-        '[HydraFacial — aftercare.]',
+        '[Breast augmentation — the consultation covers chest-wall and tissue measurements, implant sizing (often with sizers or imaging), and a candid discussion of lifetime maintenance.]',
+        '[Breast augmentation — typical timeline from decision to surgery is roughly 6–10 weeks; plan on about a week off work and 4–6 weeks before resuming full activity.]',
+        '[Breast augmentation — aftercare includes staged follow-ups and a long-term imaging/monitoring schedule appropriate to the implant type.]',
       ],
     },
-    'chemical-peel': {
-      label: 'Chemical Peel',
+    'body-contouring': {
+      label: 'Body Contouring',
       descriptionShort:
-        '[Chemical peel — one-line framing, e.g. depth matched to your skin and your goal, not a one-size formula. Real copy at onboarding.]',
+        '[Body contouring — one-line framing, e.g. surgical reshaping after weight loss or pregnancy, planned in stages rather than all at once. Real copy at onboarding.]',
       education: [
-        '[Chemical peel — paragraph 1: what peels address and the practice’s approach to choosing depth and formulation for the individual. Real copy from the client during onboarding.]',
-        '[Chemical peel — paragraph 2: candidacy, skin-tone considerations, and how peels are sequenced with other treatments.]',
-        '[Chemical peel — paragraph 3: recovery realities and how progress is reviewed.]',
+        '[Body contouring — paragraph 1: what falls under this heading at the practice — liposuction, abdominoplasty, and post-weight-loss procedures (arms, thighs, body lift) — and the principle of treating skin excess and contour together rather than fat alone. Real copy from the client during onboarding.]',
+        '[Body contouring — paragraph 2: candidacy and sequencing — weight stability, nutrition and smoking status, scar trade-offs, the case for staging multiple areas across separate operations, and when the honest answer is "not yet" or "not surgically."]',
+        '[Body contouring — paragraph 3: the surgical experience and recovery — anesthesia and operative time, drains and compression garments, the multi-week recovery curve, activity restrictions, and how scars evolve over the first year.]',
       ],
       whatToExpect: [
-        '[Chemical peel — what the consultation covers, including any pre-treatment skin prep.]',
-        '[Chemical peel — typical timeline and number of treatments.]',
-        '[Chemical peel — downtime and aftercare.]',
+        '[Body contouring — the consultation covers an assessment of skin laxity and fat distribution by area, a realistic discussion of scars, and a proposed staging plan if more than one area is involved.]',
+        '[Body contouring — typical timeline from decision to surgery is roughly 8–12 weeks; the recovery commitment varies by procedure but commonly runs 2–4 weeks before returning to desk work.]',
+        '[Body contouring — aftercare includes drain management where applicable, a compression-garment protocol, and follow-ups through the first year.]',
       ],
     },
-    'laser-hair': {
-      label: 'Laser Hair Removal',
+    'injectable-consultation': {
+      label: 'Injectable Consultation',
       descriptionShort:
-        '[Laser hair removal — one-line framing, e.g. device and settings matched to skin and hair type, over a planned course. Real copy at onboarding.]',
+        '[Injectable consultation — one-line framing, e.g. neuromodulators and fillers dosed conservatively to keep natural movement and proportion. Real copy at onboarding.]',
       education: [
-        '[Laser hair removal — paragraph 1: how it works, the practice’s device choices, and realistic reduction over a series. Real copy from the client during onboarding.]',
-        '[Laser hair removal — paragraph 2: candidacy across skin and hair types, and what affects results.]',
-        '[Laser hair removal — paragraph 3: the treatment schedule and maintenance over time.]',
+        '[Injectable consultation — paragraph 1: the practice’s philosophy on non-surgical injectables — which areas it treats with neuromodulators versus fillers, the stance on starting low and reviewing, and where it draws the line between refreshing and overfilling. Real copy from the client during onboarding.]',
+        '[Injectable consultation — paragraph 2: candidacy and decision factors — what injectables can realistically do, longevity and reversibility, how they sequence alongside (or defer) surgical options, and when the practitioner would recommend a surgical consult instead.]',
+        '[Injectable consultation — paragraph 3: planning and follow-up — how the first visit establishes a baseline and a treatment cadence, and what an ongoing maintenance rhythm typically looks like.]',
       ],
       whatToExpect: [
-        '[Laser hair removal — what the consultation and patch testing involve.]',
-        '[Laser hair removal — number of sessions and spacing.]',
-        '[Laser hair removal — aftercare and sun precautions.]',
+        '[Injectable consultation — the visit covers a facial-movement and proportion assessment, a discussion of which products suit which areas, and a maintenance plan; this consultation can be conducted virtually or in person.]',
+        '[Injectable consultation — if you proceed, treatment is often same-visit or scheduled shortly after; results from neuromodulators show over 1–2 weeks and last roughly 3–4 months.]',
+        '[Injectable consultation — aftercare is minimal; a follow-up review is scheduled to assess results and refine dosing.]',
       ],
     },
-    prp: {
-      label: 'PRP / Hair Restoration',
+    'skin-restoration': {
+      label: 'Skin Restoration & Mohs',
       descriptionShort:
-        '[PRP / hair restoration — one-line framing, e.g. an honest read on candidacy before any course is recommended. Real copy at onboarding.]',
+        '[Skin restoration & Mohs — one-line framing, e.g. medical-dermatology rigour for skin cancer and lesions, with reconstruction handled by the surgical team. Real copy at onboarding.]',
       education: [
-        '[PRP / hair restoration — paragraph 1: what the treatment is, the evidence the practice relies on, and who tends to respond. Real copy from the client during onboarding.]',
-        '[PRP / hair restoration — paragraph 2: candidacy, what it can realistically do, and where the practice would steer you elsewhere instead.]',
-        '[PRP / hair restoration — paragraph 3: the treatment course, follow-up imaging, and maintenance.]',
+        '[Skin restoration & Mohs — paragraph 1: what this covers at the practice — skin-cancer evaluation and Mohs surgery, lesion and mole assessment, and the cosmetic-dermatology and resurfacing work that supports scar and skin-quality recovery. Real copy from the client during onboarding.]',
+        '[Skin restoration & Mohs — paragraph 2: candidacy and decision factors — how suspicious lesions are worked up and biopsied, when Mohs is the right modality, how reconstruction options are chosen for the location, and the practice’s stance on surveillance for higher-risk patients.]',
+        '[Skin restoration & Mohs — paragraph 3: the procedure and recovery — what a Mohs day looks like (staged excision with same-day margin control), the reconstruction and wound-care timeline, scar-maturation expectations, and the resurfacing options available later if wanted.]',
       ],
       whatToExpect: [
-        '[PRP / hair restoration — what the consultation and scalp assessment cover.]',
-        '[PRP / hair restoration — the schedule of sessions and when results are reviewed.]',
-        '[PRP / hair restoration — aftercare.]',
-      ],
-    },
-    'iv-therapy': {
-      label: 'IV Therapy',
-      descriptionShort:
-        '[IV therapy — one-line framing, e.g. a wellness add-on, framed honestly within the practice’s scope. Real copy at onboarding.]',
-      education: [
-        '[IV therapy — paragraph 1: what the practice offers, the framing it’s comfortable making, and what it won’t claim. Real copy from the client during onboarding.]',
-        '[IV therapy — paragraph 2: who it suits and how it’s positioned alongside the rest of the practice’s care.]',
-        '[IV therapy — paragraph 3: cadence and what to expect from a session.]',
-      ],
-      whatToExpect: [
-        '[IV therapy — what the consultation covers, including any screening.]',
-        '[IV therapy — what a session involves.]',
-        '[IV therapy — aftercare.]',
+        '[Skin restoration & Mohs — the consultation includes a focused skin exam of the area of concern (and a full-body check if indicated), a biopsy if needed, and a discussion of treatment and reconstruction options; an in-person visit is required for lesion assessment.]',
+        '[Skin restoration & Mohs — for Mohs cases, surgery is typically scheduled within a few weeks of diagnosis; the procedure is usually a single day, with reconstruction the same day or shortly after.]',
+        '[Skin restoration & Mohs — aftercare includes a wound-care protocol, suture removal, scar-review follow-ups, and a recommended skin-surveillance schedule.]',
       ],
     },
     comprehensive: {
