@@ -23,7 +23,7 @@ export const siteConfig = {
   // Landing screen
   // Hero portrait on LAND. Replaces the gray placeholder when populated.
   // Recommended: 4:3 portrait, 600–1200px wide. null = gray placeholder block.
-  heroImageUrl: null,
+  heroImageUrl: '/images/hero.jpg',
   signatureProcedures: [                  // shown as pills under hero
     'Facial Surgery',
     'Body Contouring',
@@ -35,7 +35,7 @@ export const siteConfig = {
   // Environmental banner on DemoPageChrome — renders horizontally between the
   // top nav and the "Begin a Conversation" heading. Recommended: wide 21:9-ish,
   // 1600–2400px. null = no banner section rendered (current state).
-  bannerImageUrl: null,
+  bannerImageUrl: '/images/banner.jpg',
 
   // Procedure card images on PICK. Maps a procedure id (PROCEDURE_DETAILS key,
   // plus the special 'comprehensive' key) to an image URL. Recommended: 4:3 or
